@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="contact">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Contact</p>
+      <h1>Get in <span class="text-grad">Touch</span></h1>
+      <p>Questions, feedback or partnership ideas? Our team is here to help — reach out anytime.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:56px">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Contact form -->
+        <div class="card reveal" style="padding:32px">
+          <h2 style="font-size:1.5rem;margin-bottom:6px">Send us a message</h2>
+          <p style="color:var(--muted);font-size:.92rem;margin-bottom:24px">We typically respond within one business day.</p>
+
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" id="cName" placeholder="Your name" />
+            <span class="hint">Please enter your name.</span>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="cEmail" placeholder="you@example.com" />
+            <span class="hint">Please enter a valid email.</span>
+          </div>
+          <div class="field">
+            <label>Subject</label>
+            <select id="cSubject">
+              <option value="">Choose a topic</option>
+              <option>General Inquiry</option>
+              <option>Technical Support</option>
+              <option>Partnership</option>
+              <option>Doctor Onboarding</option>
+            </select>
+            <span class="hint">Please select a subject.</span>
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea class="field-area" id="cMessage" placeholder="How can we help you?"></textarea>
+            <span class="hint">Please enter a message.</span>
+          </div>
+          <button class="btn btn-primary btn-block btn-lg" id="cSend">Send Message</button>
+        </div>
+
+        <!-- Contact info -->
+        <div>
+          <div class="card contact-info-card reveal reveal-d1" style="margin-bottom:16px">
+            <div class="ci-ic" id="ci1"></div>
+            <div>
+              <h4>Visit Us</h4>
+              <p>12 Tahrir Square, Downtown Cairo, Egypt</p>
+            </div>
+          </div>
+          <div class="card contact-info-card reveal reveal-d2" style="margin-bottom:16px">
+            <div class="ci-ic" id="ci2"></div>
+            <div>
+              <h4>Call Us</h4>
+              <p>+20 2 1234 5678 · Sun–Thu, 9am–6pm</p>
+            </div>
+          </div>
+          <div class="card contact-info-card reveal reveal-d3" style="margin-bottom:16px">
+            <div class="ci-ic" id="ci3"></div>
+            <div>
+              <h4>Email Us</h4>
+              <p>support@medicare-ai.com</p>
+            </div>
+          </div>
+          <div class="card reveal reveal-d3" style="overflow:hidden">
+            <div class="map-placeholder" style="height:200px">
+              <div class="pin"></div>
+              <span class="lbl">MediCare HQ · Cairo</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Emergency band -->
+      <div class="emergency-band reveal" style="margin-top:36px">
+        <div class="eb-ic" id="ebIcon"></div>
+        <div>
+          <h3>Medical Emergency Hotline</h3>
+          <p>For life-threatening emergencies, call immediately. Available 24 hours a day.</p>
+        </div>
+        <div class="eb-num">123-911</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script>
+    mountChrome();
+    document.getElementById('ci1').innerHTML = ICONS.pin;
+    document.getElementById('ci2').innerHTML = ICONS.phone;
+    document.getElementById('ci3').innerHTML = ICONS.mail;
+    document.getElementById('ebIcon').innerHTML = ICONS.phone;
+
+    /* ----- Form validation ----- */
+    function setInvalid(id, bad) {
+      document.getElementById(id).closest('.field').classList.toggle('invalid', bad);
+    }
+    document.getElementById('cSend').addEventListener('click', () => {
+      const name = document.getElementById('cName').value.trim();
+      const email = document.getElementById('cEmail').value.trim();
+      const subject = document.getElementById('cSubject').value;
+      const message = document.getElementById('cMessage').value.trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      setInvalid('cName', !name);
+      setInvalid('cEmail', !emailOk);
+      setInvalid('cSubject', !subject);
+      setInvalid('cMessage', !message);
+
+      if (!name || !emailOk || !subject || !message) {
+        toast('Please complete all fields correctly.', 'error');
+        return;
+      }
+      toast('Your message has been sent. We\u2019ll be in touch soon!', 'success', 'Message Sent');
+      ['cName','cEmail','cMessage'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('cSubject').value = '';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+/* =========================================================
+   MediCare AI Platform — Appointment Booking System
+   Renders the booking modal: doctor select, date picker,
+   time-slot grid, confirm step and success screen.
+   Used by doctors.html and the patient dashboard.
+   ========================================================= */
+
+/* Available time slots — a couple are marked "taken" for realism. */
+const TIME_SLOTS = [
+  { t: '09:00 AM', taken: false }, { t: '10:30 AM', taken: false },
+  { t: '11:15 AM', taken: true  }, { t: '12:00 PM', taken: false },
+  { t: '01:30 PM', taken: false }, { t: '02:45 PM', taken: true  },
+  { t: '04:00 PM', taken: false }, { t: '05:30 PM', taken: false }
+];
+
+/* Booking state for the currently open modal */
+let bookingState = { doctorId: null, date: '', time: '' };
+
+/* Return today's date as YYYY-MM-DD (for the date input min) */
+function todayISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+/* Open the booking modal for a given doctor id */
+function openBooking(doctorId) {
+  const doc = DB.doctors.find(d => d.id === doctorId);
+  if (!doc) return;
+  bookingState = { doctorId, date: '', time: '' };
+
+  const body = document.getElementById('bookingBody');
+  body.innerHTML = `
+    <div class="doc-row" style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+      <div class="avatar ${doc.av || ''}" style="width:56px;height:56px;border-radius:15px;font-size:1.2rem">${initials(doc.name)}</div>
+      <div>
+        <h4 style="font-size:1.05rem">${doc.name}</h4>
+        <p style="font-size:.86rem;color:var(--muted)">${doc.specialty} · ${doc.city}, ${doc.country}</p>
+      </div>
+      <span class="badge badge-blue" style="margin-left:auto">$${doc.fee} / visit</span>
+    </div>
+
+    <div class="field">
+      <label>Select Date</label>
+      <input type="date" id="bkDate" min="${todayISO()}" value="${todayISO()}" />
+    </div>
+
+    <div class="field">
+      <label>Select Time Slot</label>
+      <div class="time-grid" id="bkSlots">
+        ${TIME_SLOTS.map((s, i) => `
+          <div class="time-slot ${s.taken ? 'taken' : ''}" data-slot="${i}">${s.t}</div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Reason for Visit (optional)</label>
+      <textarea class="field-area" id="bkReason" placeholder="Briefly describe your symptoms or reason..." style="min-height:80px"></textarea>
+    </div>
+
+    <button class="btn btn-primary btn-block btn-lg" id="bkConfirm">
+      ${ICONS.calendar} Confirm Appointment
+    </button>
+  `;
+
+  /* Date binding */
+  const dateInput = document.getElementById('bkDate');
+  bookingState.date = dateInput.value;
+  dateInput.addEventListener('change', () => { bookingState.date = dateInput.value; });
+
+  /* Time slot selection */
+  document.querySelectorAll('#bkSlots .time-slot').forEach(slot => {
+    slot.addEventListener('click', () => {
+      const idx = +slot.dataset.slot;
+      if (TIME_SLOTS[idx].taken) return;
+      document.querySelectorAll('#bkSlots .time-slot').forEach(s => s.classList.remove('sel'));
+      slot.classList.add('sel');
+      bookingState.time = TIME_SLOTS[idx].t;
+    });
+  });
+
+  /* Confirm */
+  document.getElementById('bkConfirm').addEventListener('click', () => confirmBooking(doc));
+
+  openModal('bookingModal');
+}
+
+/* Validate and show the success screen */
+function confirmBooking(doc) {
+  if (!bookingState.date) { toast('Please choose a date for your appointment.', 'error'); return; }
+  if (!bookingState.time) { toast('Please select an available time slot.', 'error'); return; }
+
+  const niceDate = new Date(bookingState.date + 'T00:00:00')
+    .toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+  const body = document.getElementById('bookingBody');
+  body.innerHTML = `
+    <div style="text-align:center;padding:8px 0 4px">
+      <div class="success-check">${ICONS.check}</div>
+      <h3 style="font-size:1.3rem;margin-bottom:8px">Appointment Confirmed!</h3>
+      <p style="color:var(--muted);font-size:.92rem;margin-bottom:22px">
+        Your booking with ${doc.name} has been scheduled. A reminder will be sent before your visit.
+      </p>
+      <div class="card" style="padding:18px;text-align:left;background:var(--bg-2);box-shadow:none">
+        <div class="mini-stat" style="border-top:none;padding-top:0"><span>Doctor</span><strong>${doc.name}</strong></div>
+        <div class="mini-stat"><span>Specialty</span><strong>${doc.specialty}</strong></div>
+        <div class="mini-stat"><span>Date</span><strong>${niceDate}</strong></div>
+        <div class="mini-stat"><span>Time</span><strong>${bookingState.time}</strong></div>
+        <div class="mini-stat"><span>Consultation Fee</span><strong>$${doc.fee}</strong></div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:20px" data-close-modal>Done</button>
+    </div>
+  `;
+  /* Re-bind the new close button */
+  body.querySelector('[data-close-modal]').addEventListener('click', () => closeModal('bookingModal'));
+  toast('Appointment booked successfully.', 'success', 'Confirmed');
+}

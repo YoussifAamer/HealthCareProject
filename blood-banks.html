@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Banks — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="blood">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Blood Banks</p>
+      <h1>Blood <span class="text-grad">Banks</span></h1>
+      <p>Find nearby blood banks, check live stock by blood type, and reach emergency donor lines fast.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:48px">
+    <div class="container">
+
+      <!-- Emergency band -->
+      <div class="emergency-band reveal" style="margin-bottom:34px">
+        <div class="eb-ic" id="ebIcon"></div>
+        <div>
+          <h3>Need Blood Urgently?</h3>
+          <p>Our national emergency donor hotline operates 24/7 for critical shortages.</p>
+        </div>
+        <div class="eb-num">123-911</div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar reveal">
+        <div class="search-field">
+          <span id="searchIcon"></span>
+          <input type="text" id="bbSearch" placeholder="Search blood banks by name..." />
+        </div>
+        <select id="countryFilter"><option value="">All Countries</option></select>
+        <select id="typeFilter">
+          <option value="">Any Blood Type</option>
+        </select>
+      </div>
+
+      <p id="resultCount" style="color:var(--muted);font-weight:600;margin-bottom:20px"></p>
+
+      <!-- Legend -->
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:22px;font-size:.84rem;font-weight:600;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:7px"><i style="width:14px;height:14px;border-radius:5px;background:var(--red-soft);display:inline-block"></i> Available</span>
+        <span style="display:flex;align-items:center;gap:7px"><i style="width:14px;height:14px;border-radius:5px;background:var(--amber-soft);display:inline-block"></i> Low stock</span>
+        <span style="display:flex;align-items:center;gap:7px"><i style="width:14px;height:14px;border-radius:5px;background:var(--bg);display:inline-block"></i> Out of stock</span>
+      </div>
+
+      <!-- Blood bank grid -->
+      <div class="grid g-3" id="bbGrid"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script>
+    mountChrome();
+    document.getElementById('searchIcon').innerHTML = ICONS.search;
+    document.getElementById('ebIcon').innerHTML = ICONS.droplet;
+
+    const BLOOD_TYPES = ['A+','A-','B+','B-','O+','O-','AB+','AB-'];
+    const STATUS_LABEL = { avail: 'Available', low: 'Low stock', out: 'Out of stock' };
+
+    /* Populate filters */
+    const countryF = document.getElementById('countryFilter');
+    const typeF = document.getElementById('typeFilter');
+    DB.countries.forEach(c => countryF.innerHTML += `<option value="${c}">${c}</option>`);
+    BLOOD_TYPES.forEach(t => typeF.innerHTML += `<option value="${t}">${t}</option>`);
+
+    function bloodBankCard(b) {
+      const chips = BLOOD_TYPES.map(t =>
+        `<div class="blood-chip ${b.stock[t]}" title="${t}: ${STATUS_LABEL[b.stock[t]]}">${t}</div>`
+      ).join('');
+      const emergency = b.emergency
+        ? '<span class="badge badge-red">Emergency Service</span>'
+        : '<span class="badge badge-blue">Standard Hours</span>';
+      return `
+      <div class="card reveal" style="padding:24px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:6px">
+          <div class="avatar av-red" style="width:50px;height:50px;border-radius:14px">${ICONS.droplet}</div>
+          <div>
+            <h3 style="font-size:1.08rem">${b.name}</h3>
+            <p style="font-size:.84rem;color:var(--muted)">${b.city}, ${b.country}</p>
+          </div>
+        </div>
+        <div style="margin:14px 0">${emergency}</div>
+        <p style="font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Live Stock</p>
+        <div class="blood-types">${chips}</div>
+        <div class="ec-foot" style="margin-top:10px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--muted);font-weight:600">${ICONS.phone} ${b.phone}</span>
+          <a href="tel:${b.phone.replace(/\s/g,'')}" class="btn btn-primary btn-sm">Call</a>
+        </div>
+      </div>`;
+    }
+
+    function render() {
+      const q = document.getElementById('bbSearch').value.toLowerCase();
+      const country = countryF.value, type = typeF.value;
+      const list = DB.bloodBanks.filter(b =>
+        b.name.toLowerCase().includes(q) &&
+        (!country || b.country === country) &&
+        (!type || b.stock[type] === 'avail'));
+
+      const grid = document.getElementById('bbGrid');
+      document.getElementById('resultCount').textContent =
+        `${list.length} blood bank${list.length !== 1 ? 's' : ''} found` +
+        (type ? ` with ${type} available` : '');
+      if (!list.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">${ICONS.droplet}<h3>No blood banks found</h3><p>Try adjusting your search or filters.</p></div>`;
+        return;
+      }
+      grid.innerHTML = list.map(bloodBankCard).join('');
+      initReveal();
+    }
+
+    ['bbSearch','countryFilter','typeFilter'].forEach(id =>
+      document.getElementById(id).addEventListener('input', render));
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body class="no-chatbot">
+  <div class="auth-wrap">
+
+    <aside class="auth-aside">
+      <a href="../index.html" class="logo"><span class="mark" id="logoMark"></span> Medi<span style="color:#9fd0ff">Care</span></a>
+      <div class="aside-mid">
+        <h2>Join the future of healthcare.</h2>
+        <p>Create your free account and unlock a smarter way to connect with doctors and care.</p>
+        <div class="glass-tile"><div class="gt-ic" id="a1"></div><div><h4>For Patients</h4><p>Book, track and understand your care.</p></div></div>
+        <div class="glass-tile"><div class="gt-ic" id="a2"></div><div><h4>For Doctors</h4><p>Reach patients and publish health content.</p></div></div>
+        <div class="glass-tile"><div class="gt-ic" id="a3"></div><div><h4>For Admins</h4><p>Manage the platform with powerful tools.</p></div></div>
+      </div>
+      <p class="quote">Trusted by 45,000+ patients and 850+ verified doctors.</p>
+    </aside>
+
+    <main class="auth-main">
+      <form class="auth-form" id="signupForm" novalidate>
+        <h1>Create account</h1>
+        <p class="sub">Start your healthcare journey in under a minute.</p>
+
+        <div class="field" id="f-name">
+          <label>Full Name</label>
+          <input type="text" id="fullName" placeholder="Your full name" />
+          <span class="hint">Please enter your full name.</span>
+        </div>
+
+        <div class="field" id="f-email">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" />
+          <span class="hint">Please enter a valid email address.</span>
+        </div>
+
+        <div class="field" id="f-pass">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="At least 6 characters" />
+          <span class="hint">Password must be at least 6 characters.</span>
+        </div>
+
+        <div class="field" id="f-cpass">
+          <label>Confirm Password</label>
+          <input type="password" id="confirm" placeholder="Re-enter your password" />
+          <span class="hint">Passwords do not match.</span>
+        </div>
+
+        <div class="field">
+          <label>Select Your Role</label>
+          <div class="role-pick">
+            <div class="role-opt sel" data-role="patient"><span id="r1"></span><span>Patient</span></div>
+            <div class="role-opt" data-role="doctor"><span id="r2"></span><span>Doctor</span></div>
+            <div class="role-opt" data-role="admin"><span id="r3"></span><span>Admin</span></div>
+          </div>
+        </div>
+
+        <label style="display:flex;gap:8px;align-items:flex-start;font-size:.84rem;font-weight:600;color:var(--ink-2);margin:6px 0 16px">
+          <input type="checkbox" id="terms" style="width:auto;margin-top:3px">
+          I agree to the Terms of Service and Privacy Policy.
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+
+        <p class="auth-foot">Already have an account? <a href="login.html">Sign in</a></p>
+      </form>
+    </main>
+  </div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script>
+    logoMark.innerHTML = ICONS.heart;
+    a1.innerHTML = ICONS.user; a2.innerHTML = ICONS.stethoscope; a3.innerHTML = ICONS.shield;
+    r1.innerHTML = ICONS.user; r2.innerHTML = ICONS.stethoscope; r3.innerHTML = ICONS.shield;
+    [r1,r2,r3].forEach(d => { d.querySelector('svg').style.width = '20px'; d.querySelector('svg').style.height = '20px'; });
+
+    let selectedRole = 'patient';
+    document.querySelectorAll('.role-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.role-opt').forEach(o => o.classList.remove('sel'));
+        opt.classList.add('sel');
+        selectedRole = opt.dataset.role;
+      });
+    });
+
+    const dest = { patient: 'patient-dashboard.html', doctor: 'doctor-dashboard.html', admin: 'admin-dashboard.html' };
+
+    document.getElementById('signupForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('fullName');
+      const email = document.getElementById('email');
+      const pass = document.getElementById('password');
+      const conf = document.getElementById('confirm');
+      let ok = true;
+
+      const nameOk = name.value.trim().length >= 3;
+      document.getElementById('f-name').classList.toggle('invalid', !nameOk); if (!nameOk) ok = false;
+
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+      document.getElementById('f-email').classList.toggle('invalid', !emailOk); if (!emailOk) ok = false;
+
+      const passOk = pass.value.length >= 6;
+      document.getElementById('f-pass').classList.toggle('invalid', !passOk); if (!passOk) ok = false;
+
+      const confOk = conf.value === pass.value && conf.value.length > 0;
+      document.getElementById('f-cpass').classList.toggle('invalid', !confOk); if (!confOk) ok = false;
+
+      if (!document.getElementById('terms').checked) {
+        toast('Please accept the Terms of Service.', 'error'); return;
+      }
+      if (!ok) { toast('Please fix the highlighted fields.', 'error'); return; }
+
+      Session.set({ name: name.value.trim(), role: selectedRole });
+      toast('Account created! Redirecting...', 'success');
+      setTimeout(() => location.href = dest[selectedRole], 1100);
+    });
+
+    ['fullName','email','password','confirm'].forEach(id => document.getElementById(id)
+      .addEventListener('input', e => e.target.closest('.field').classList.remove('invalid')));
+  </script>
+</body>
+</html>

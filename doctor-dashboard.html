@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Dashboard — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="doctor" class="no-chatbot">
+
+  <div class="dash">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <a href="../index.html" class="logo">
+        <span class="mark" id="logoIcon"></span> Medi<span>Care</span>
+      </a>
+      <div class="side-label">My Practice</div>
+      <div class="side-link active" data-view="overview"><span id="i-overview"></span> Overview</div>
+      <div class="side-link" data-view="bookings"><span id="i-bookings"></span> Patient Bookings <span class="tag">2</span></div>
+      <div class="side-link" data-view="schedule"><span id="i-schedule"></span> My Schedule</div>
+
+      <div class="side-label">Contribute</div>
+      <div class="side-link" data-view="articles"><span id="i-articles"></span> Add Health Article</div>
+      <div class="side-link" data-view="diseases"><span id="i-diseases"></span> Add Disease Info</div>
+      <div class="side-link" data-view="herbal"><span id="i-herbal"></span> Add Herbal Remedy</div>
+
+      <div class="side-label">Tools</div>
+      <div class="side-link" data-view="ai"><span id="i-ai"></span> AI Suggestions</div>
+      <div class="side-link" data-view="profile"><span id="i-profile"></span> My Profile</div>
+      <a href="login.html" class="side-link"><span id="i-logout"></span> Log Out</a>
+    </aside>
+    <div class="sidebar-backdrop" id="backdrop"></div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="dash-main">
+      <header class="dash-topbar">
+        <button class="icon-btn dash-menu-btn" id="menuBtn" style="display:none"><span id="menuIcon"></span></button>
+        <h2 id="topTitle">Overview</h2>
+        <div class="topbar-search">
+          <span id="searchIcon"></span>
+          <input type="text" placeholder="Search patients, articles..." />
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn"><span id="bellIcon"></span><span class="dot"></span></button>
+          <div class="profile-chip" id="profileChip">
+            <div class="avatar av-cyan" id="userAv">DR</div>
+            <div>
+              <div class="pc-name" id="userName">Doctor</div>
+              <div class="pc-role">Doctor Account</div>
+            </div>
+            <div class="dropdown" id="profileDrop">
+              <a href="#" data-goto="profile"><span id="d1"></span> My Profile</a>
+              <a href="#" data-goto="bookings"><span id="d2"></span> Patient Bookings</a>
+              <div class="sep"></div>
+              <a href="login.html"><span id="d3"></span> Log Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="dash-body">
+
+        <!-- ===== VIEW: OVERVIEW ===== -->
+        <section class="dash-view active" id="view-overview">
+          <div class="view-title">
+            <h1>Welcome, <span id="welcomeName">Doctor</span> 👨‍⚕️</h1>
+            <p>Here's a snapshot of your practice activity this week.</p>
+          </div>
+
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--primary-soft);color:var(--primary)" id="s1"></div>
+                <span class="trend up" id="s1trend"></span></div>
+              <strong>4</strong><span class="sc-label">Pending Bookings</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--cyan-soft);color:#0a8c98" id="s2"></div>
+                <span class="trend up" id="s2trend"></span></div>
+              <strong>28</strong><span class="sc-label">Consultations This Month</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--green-soft);color:var(--green)" id="s3"></div>
+                <span class="trend up" id="s3trend"></span></div>
+              <strong>4.9</strong><span class="sc-label">Average Rating</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--amber-soft);color:#b9791b" id="s4"></div>
+                <span class="trend down" id="s4trend"></span></div>
+              <strong>$1,840</strong><span class="sc-label">This Month's Earnings</span>
+            </div>
+          </div>
+
+          <!-- Charts row -->
+          <div class="grid g-2" style="margin-bottom:22px">
+            <div class="panel">
+              <div class="panel-head"><h3>Consultations — Last 6 Months</h3></div>
+              <div class="panel-body">
+                <div class="bar-chart" id="barChart"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Specialties Breakdown</h3></div>
+              <div class="panel-body" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+                <div>
+                  <div class="donut" id="donutChart" style="background:conic-gradient(var(--primary) 0% 55%,var(--cyan) 55% 80%,var(--accent) 80% 100%)">
+                    <div class="donut-center">
+                      <strong>28</strong><span>patients</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="legend">
+                  <div class="legend-row"><div class="sw" style="background:var(--primary)"></div>Cardiology <span>15</span></div>
+                  <div class="legend-row"><div class="sw" style="background:var(--cyan)"></div>Cardiology Follow-up <span>7</span></div>
+                  <div class="legend-row"><div class="sw" style="background:var(--accent)"></div>Other Referrals <span>6</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's schedule preview -->
+          <div class="panel">
+            <div class="panel-head"><h3>Today's Schedule</h3>
+              <a href="#" class="btn btn-line btn-sm" data-goto="bookings">Full schedule</a></div>
+            <div class="panel-body" id="todaySchedule"></div>
+          </div>
+
+          <!-- AI suggestions -->
+          <div class="panel">
+            <div class="panel-head"><h3>AI Health Insights for Your Patients</h3></div>
+            <div class="panel-body">
+              <ul class="tip-list" id="docAiSugg"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: PATIENT BOOKINGS ===== -->
+        <section class="dash-view" id="view-bookings">
+          <div class="view-title"><h1>Patient Bookings</h1><p>Review, confirm or reschedule incoming appointment requests.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Incoming Requests</h3>
+              <span class="badge badge-amber">2 Pending</span></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table id="bookingsTable">
+                  <thead><tr>
+                    <th>Patient</th><th>Reason</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th>
+                  </tr></thead>
+                  <tbody id="bookingsTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: SCHEDULE ===== -->
+        <section class="dash-view" id="view-schedule">
+          <div class="view-title"><h1>My Schedule</h1><p>Overview of all confirmed patient appointments.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Confirmed Appointments</h3></div>
+            <div class="panel-body" id="scheduleList"></div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: ADD HEALTH ARTICLE ===== -->
+        <section class="dash-view" id="view-articles">
+          <div class="view-title"><h1>Add Health Article</h1><p>Share evidence-based health tips with the community.</p></div>
+          <div class="panel" style="max-width:720px">
+            <div class="panel-body">
+              <div class="composer-grid">
+                <div class="field"><label>Article Title</label>
+                  <input type="text" id="artTitle" placeholder="e.g. 5 Ways to Strengthen Your Heart" /></div>
+                <div class="field"><label>Category</label>
+                  <select id="artCat">
+                    <option>Heart Health</option><option>Nutrition</option><option>Mental Health</option>
+                    <option>Sleep</option><option>Fitness</option><option>Prevention</option>
+                  </select></div>
+                <div class="field"><label>Excerpt / Summary</label>
+                  <textarea class="field-area" id="artExcerpt" placeholder="A short description visible on the tips listing..."></textarea></div>
+                <div class="field"><label>Full Content</label>
+                  <textarea class="field-area" id="artContent" style="min-height:180px" placeholder="Write the full article body here..."></textarea></div>
+              </div>
+              <button class="btn btn-primary" style="margin-top:18px" id="submitArticle">
+                <span id="publishIcon"></span> Publish Article
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: ADD DISEASE ===== -->
+        <section class="dash-view" id="view-diseases">
+          <div class="view-title"><h1>Add Disease Information</h1><p>Contribute to our patient health library.</p></div>
+          <div class="panel" style="max-width:720px">
+            <div class="panel-body">
+              <div class="composer-grid">
+                <div class="field"><label>Disease Name</label>
+                  <input type="text" id="disName" placeholder="e.g. Hypertension" /></div>
+                <div class="field"><label>Symptoms (comma-separated)</label>
+                  <input type="text" id="disSymptoms" placeholder="e.g. Headache, Dizziness, Fatigue" /></div>
+                <div class="field"><label>Treatment Approach</label>
+                  <textarea class="field-area" id="disTreatment" placeholder="Describe the recommended treatment..."></textarea></div>
+              </div>
+              <button class="btn btn-primary" style="margin-top:18px" id="submitDisease">
+                <span id="addDiseaseIcon"></span> Add to Library
+              </button>
+            </div>
+          </div>
+          <!-- Existing diseases -->
+          <div class="panel" style="margin-top:22px">
+            <div class="panel-head"><h3>Current Disease Library</h3></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Disease</th><th>Symptoms</th><th>Actions</th></tr></thead>
+                  <tbody id="diseasesTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: ADD HERBAL ===== -->
+        <section class="dash-view" id="view-herbal">
+          <div class="view-title"><h1>Add Herbal Remedy</h1><p>Share traditional remedy knowledge with patients.</p></div>
+          <div class="panel" style="max-width:720px">
+            <div class="panel-body">
+              <div class="composer-grid">
+                <div class="field"><label>Herb / Remedy Name</label>
+                  <input type="text" id="herbName" placeholder="e.g. Ginger" /></div>
+                <div class="field"><label>Uses &amp; Benefits</label>
+                  <textarea class="field-area" id="herbUse" placeholder="Describe traditional uses and possible benefits..."></textarea></div>
+                <div class="disclaimer" style="margin-top:4px">
+                  <span id="discIcon"></span>
+                  <div>Always add a note that herbal remedies should be confirmed with a physician before use.</div>
+                </div>
+              </div>
+              <button class="btn btn-primary" style="margin-top:18px" id="submitHerbal">
+                <span id="addHerbalIcon"></span> Add Remedy
+              </button>
+            </div>
+          </div>
+          <!-- Existing herbal -->
+          <div class="panel" style="margin-top:22px">
+            <div class="panel-head"><h3>Current Remedy List</h3></div>
+            <div class="panel-body"><div class="grid g-3" id="herbalList"></div></div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: AI SUGGESTIONS ===== -->
+        <section class="dash-view" id="view-ai">
+          <div class="view-title"><h1>AI Health Insights</h1><p>AI-generated suggestions you can share or reference with patients.</p></div>
+          <div class="grid g-2">
+            <div class="panel">
+              <div class="panel-head"><h3>Clinical Suggestions</h3></div>
+              <div class="panel-body"><ul class="tip-list" id="aiSugg"></ul></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Nutrition Recommendations</h3></div>
+              <div class="panel-body"><ul class="tip-list" id="aiNutr"></ul></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Lifestyle Recommendations</h3></div>
+              <div class="panel-body"><ul class="tip-list" id="aiLife"></ul></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Herbal Insights</h3></div>
+              <div class="panel-body"><ul class="tip-list" id="aiHerb"></ul></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: PROFILE ===== -->
+        <section class="dash-view" id="view-profile">
+          <div class="view-title"><h1>My Profile</h1><p>Update your public doctor profile visible to patients.</p></div>
+          <div class="panel" style="max-width:660px">
+            <div class="panel-body">
+              <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+                <div class="avatar av-cyan" id="profileAv" style="width:72px;height:72px;border-radius:20px;font-size:1.5rem">DR</div>
+                <div>
+                  <h3 id="profileName" style="font-size:1.2rem">Doctor</h3>
+                  <p style="color:var(--muted);font-size:.9rem">Doctor Account · Verified Physician</p>
+                  <span class="badge badge-green" style="margin-top:5px">Verified</span>
+                </div>
+              </div>
+              <div class="composer-grid">
+                <div class="field"><label>Full Name</label><input type="text" id="pfName" /></div>
+                <div class="field"><label>Specialty</label>
+                  <select id="pfSpec"></select></div>
+                <div class="field"><label>City</label><input type="text" id="pfCity" placeholder="Your city" /></div>
+                <div class="field"><label>Country</label>
+                  <select id="pfCountry"></select></div>
+                <div class="field"><label>Consultation Fee (USD)</label>
+                  <input type="number" id="pfFee" placeholder="e.g. 50" /></div>
+                <div class="field"><label>Bio</label>
+                  <textarea class="field-area" id="pfBio" placeholder="A short professional bio shown on your listing..."></textarea></div>
+              </div>
+              <button class="btn btn-primary" style="margin-top:18px" id="saveProfile">Save Changes</button>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /dash-body -->
+    </div><!-- /dash-main -->
+  </div><!-- /dash -->
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/dashboard.js"></script>
+  <script>
+    /* ----- Icons ----- */
+    document.getElementById('logoIcon').innerHTML = ICONS.heart;
+    document.getElementById('menuIcon').innerHTML = ICONS.menu;
+    document.getElementById('searchIcon').innerHTML = ICONS.search;
+    document.getElementById('bellIcon').innerHTML = ICONS.bell;
+    document.getElementById('publishIcon').innerHTML = ICONS.plus;
+    document.getElementById('addDiseaseIcon').innerHTML = ICONS.plus;
+    document.getElementById('addHerbalIcon').innerHTML = ICONS.leaf;
+    document.getElementById('discIcon').innerHTML = ICONS.warning;
+    document.getElementById('d1').innerHTML = ICONS.user;
+    document.getElementById('d2').innerHTML = ICONS.calendar;
+    document.getElementById('d3').innerHTML = ICONS.logout;
+
+    const sideIcons = { overview:'layout', bookings:'calendar', schedule:'clock',
+      articles:'doc', diseases:'pill', herbal:'leaf', ai:'sparkle', profile:'user', logout:'logout' };
+    Object.entries(sideIcons).forEach(([k,v]) => {
+      const el = document.getElementById('i-'+k); if(el) el.innerHTML = ICONS[v] || '';
+    });
+    ['s1','s2','s3','s4'].forEach((id,i) => {
+      document.getElementById(id).innerHTML = [ICONS.calendar,ICONS.users,ICONS.star,ICONS.chart][i];
+    });
+    ['s1trend','s2trend','s3trend','s4trend'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const up = i < 3;
+      el.className = `trend ${up?'up':'down'}`;
+      el.innerHTML = (up ? '▲ ' : '▼ ') + ['12%','8%','0.1','5%'][i];
+    });
+
+    /* ----- Session ----- */
+    const user = Session.get() || { name: 'Dr. Layla Hassan', role: 'doctor' };
+    const uName = user.name || 'Dr. Layla Hassan';
+    ['userName','welcomeName','profileName'].forEach(id => document.getElementById(id).textContent = uName);
+    document.getElementById('pfName').value = uName;
+    ['userAv','profileAv'].forEach(id => document.getElementById(id).textContent = initials(uName));
+
+    /* ----- Dashboard nav ----- */
+    initDashNav('Overview', {
+      overview:'Overview', bookings:'Patient Bookings', schedule:'My Schedule',
+      articles:'Add Health Article', diseases:'Add Disease Info',
+      herbal:'Add Herbal Remedy', ai:'AI Insights', profile:'My Profile'
+    });
+
+    /* ----- Bar chart ----- */
+    const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+    const vals   = [18,22,16,28,24,28];
+    document.getElementById('barChart').innerHTML = months.map((m,i) => `
+      <div class="bar-col">
+        <div class="bar" style="height:${(vals[i]/28)*100}%" data-val="${vals[i]} patients"></div>
+        <span>${m}</span>
+      </div>`).join('');
+
+    /* ----- Today's schedule ----- */
+    document.getElementById('todaySchedule').innerHTML =
+      DB.bookings.slice(0,2).map(b => `
+        <div class="appt-row">
+          <div class="appt-date"><strong>${b.day}</strong><span>${b.mon}</span></div>
+          <div class="appt-info"><h4>${b.patient}</h4><p>${b.reason} · ${b.time}</p></div>
+          <span class="badge ${b.status==='Confirmed'?'badge-green':'badge-amber'}">${b.status}</span>
+        </div>`).join('');
+
+    /* ----- Patient bookings table ----- */
+    document.getElementById('bookingsTbody').innerHTML = DB.bookings.map(b => `
+      <tr>
+        <td><div class="td-user">
+          <div class="avatar ${b.av}" style="width:36px;height:36px;border-radius:10px;font-size:.8rem">${initials(b.patient)}</div>
+          <strong>${b.patient}</strong>
+        </div></td>
+        <td>${b.reason}</td>
+        <td>${b.mon} ${b.day}</td>
+        <td>${b.time}</td>
+        <td><span class="badge ${b.status==='Confirmed'?'badge-green':'badge-amber'}">${b.status}</span></td>
+        <td><div class="t-action">
+          <button class="t-btn edit" title="Confirm" onclick="toast('Booking confirmed.','success')">${ICONS.check}</button>
+          <button class="t-btn del"  title="Cancel"  onclick="toast('Booking cancelled.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* ----- Schedule view ----- */
+    document.getElementById('scheduleList').innerHTML = DB.bookings.map(b => `
+      <div class="appt-row">
+        <div class="appt-date"><strong>${b.day}</strong><span>${b.mon}</span></div>
+        <div class="appt-info">
+          <h4>${b.patient}</h4>
+          <p>${b.reason} · ${b.time}</p>
+        </div>
+        <span class="badge ${b.status==='Confirmed'?'badge-green':'badge-amber'}">${b.status}</span>
+      </div>`).join('');
+
+    /* ----- Diseases table ----- */
+    document.getElementById('diseasesTable').innerHTML = DB.diseases.map(d => `
+      <tr>
+        <td><strong>${d.name}</strong></td>
+        <td>${d.symptoms.slice(0,2).join(', ')}…</td>
+        <td><div class="t-action">
+          <button class="t-btn edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+          <button class="t-btn del"  onclick="toast('Deleted from library.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* ----- Herbal list ----- */
+    document.getElementById('herbalList').innerHTML = DB.herbal.map(herbalCardHTML).join('');
+
+    /* ----- AI suggestions ----- */
+    const aiTip = t => `<li><span class="ti">${ICONS.check}</span><span>${t}</span></li>`;
+    document.getElementById('aiSugg').innerHTML = DB.aiResult.suggestions.map(aiTip).join('');
+    document.getElementById('aiNutr').innerHTML = DB.aiResult.nutrition.map(aiTip).join('');
+    document.getElementById('aiLife').innerHTML = DB.aiResult.recommendations.map(aiTip).join('');
+    document.getElementById('aiHerb').innerHTML = DB.aiResult.herbal.map(aiTip).join('');
+    document.getElementById('docAiSugg').innerHTML =
+      DB.aiResult.suggestions.concat(DB.aiResult.recommendations)
+        .slice(0,4).map(aiTip).join('');
+
+    /* ----- Profile selects ----- */
+    const pfSpec = document.getElementById('pfSpec');
+    const pfCountry = document.getElementById('pfCountry');
+    DB.specialties.forEach(s => pfSpec.innerHTML += `<option>${s}</option>`);
+    DB.countries.forEach(c => pfCountry.innerHTML += `<option>${c}</option>`);
+
+    /* ----- Form submissions ----- */
+    document.getElementById('submitArticle').addEventListener('click', () => {
+      const t = document.getElementById('artTitle').value.trim();
+      if (!t) { toast('Please enter an article title.','error'); return; }
+      toast('Article published successfully!','success','Published');
+    });
+    document.getElementById('submitDisease').addEventListener('click', () => {
+      const n = document.getElementById('disName').value.trim();
+      if (!n) { toast('Please enter a disease name.','error'); return; }
+      toast('Disease entry added to library.','success','Added');
+    });
+    document.getElementById('submitHerbal').addEventListener('click', () => {
+      const n = document.getElementById('herbName').value.trim();
+      if (!n) { toast('Please enter a remedy name.','error'); return; }
+      toast('Herbal remedy added successfully.','success','Added');
+    });
+    document.getElementById('saveProfile').addEventListener('click', () =>
+      toast('Profile updated successfully.','success'));
+  </script>
+</body>
+</html>

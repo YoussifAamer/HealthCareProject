@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Tips — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="tips">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Health Tips</p>
+      <h1>Health Tips &amp; <span class="text-grad">Wellness</span></h1>
+      <p>Expert articles, common disease guides and natural remedy suggestions to help you stay informed.</p>
+    </div>
+  </header>
+
+  <!-- ===== ARTICLES ===== -->
+  <section class="section" style="padding-top:56px;padding-bottom:48px">
+    <div class="container">
+      <div class="section-head" style="margin-bottom:40px">
+        <span class="eyebrow">Latest Articles</span>
+        <h2>Read &amp; Stay Healthy</h2>
+        <p>Practical, doctor-written guidance you can apply to everyday life.</p>
+      </div>
+      <div class="grid g-3" id="tipsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== COMMON DISEASES ===== -->
+  <section class="section-sm" style="background:var(--bg-2)">
+    <div class="container" style="max-width:880px">
+      <div class="section-head" style="margin-bottom:36px">
+        <span class="eyebrow">Disease Library</span>
+        <h2>Common Diseases &amp; Treatment</h2>
+        <p>Understand symptoms and recommended treatment approaches. Tap a condition to expand.</p>
+      </div>
+      <div class="disease-acc" id="diseaseAcc"></div>
+    </div>
+  </section>
+
+  <!-- ===== HERBAL REMEDIES ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head" style="margin-bottom:40px">
+        <span class="eyebrow">Natural Care</span>
+        <h2>Herbal Remedy Suggestions</h2>
+        <p>Traditional remedies that may support wellbeing — always confirm with your doctor.</p>
+      </div>
+      <div class="grid g-3" id="herbalGrid"></div>
+
+      <div class="disclaimer reveal" style="max-width:760px;margin:40px auto 0">
+        <span id="discIcon"></span>
+        <div>
+          <strong>Educational content only.</strong> Herbal remedies are not a substitute
+          for professional medical treatment. Consult a healthcare provider before use.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script>
+    mountChrome();
+    document.getElementById('discIcon').innerHTML = ICONS.warning;
+
+    /* ----- Article cards ----- */
+    const coverGrads = {
+      'av-red': 'linear-gradient(135deg,#ec4565,#c42446)',
+      'av-green': 'linear-gradient(135deg,#18b368,#0c8a4c)',
+      'av-violet': 'linear-gradient(135deg,#6c4cf0,#4226c0)',
+      'av-cyan': 'linear-gradient(135deg,#15c5d6,#0a8c98)',
+      'av-amber': 'linear-gradient(135deg,#f0a83c,#d4831a)',
+      '': 'var(--grad-brand)'
+    };
+    document.getElementById('tipsGrid').innerHTML = DB.healthTips.map((t, i) => `
+      <div class="card tip-card reveal reveal-d${(i % 3) + 1}">
+        <div class="tc-cover" style="background:${coverGrads[t.color] || 'var(--grad-brand)'}">
+          ${ICONS[t.icon] || ICONS.heart}
+        </div>
+        <div class="tc-body">
+          <span class="tc-cat">${t.cat}</span>
+          <h3>${t.title}</h3>
+          <p>${t.excerpt}</p>
+          <div class="tc-foot">
+            <span>${ICONS.clock} ${t.read} read</span>
+            <span>${ICONS.user} ${t.author}</span>
+          </div>
+        </div>
+      </div>`).join('');
+
+    /* ----- Disease accordion ----- */
+    document.getElementById('diseaseAcc').innerHTML = DB.diseases.map(d => `
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          <span>${d.name}</span>
+          <span class="pm">+</span>
+        </div>
+        <div class="faq-a">
+          <div style="padding:0 24px 22px">
+            <p style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Common Symptoms</p>
+            <div class="symptom-tags" style="margin-bottom:16px">
+              ${d.symptoms.map(s => `<span class="badge badge-blue">${s}</span>`).join('')}
+            </div>
+            <p style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Treatment Approach</p>
+            <p style="color:var(--muted);font-size:.92rem">${d.treatment}</p>
+          </div>
+        </div>
+      </div>`).join('');
+
+    /* ----- Herbal grid ----- */
+    document.getElementById('herbalGrid').innerHTML = DB.herbal.map((h, i) => `
+      <div class="card feature-card reveal reveal-d${(i % 3) + 1}">
+        <div class="f-ic">${ICONS[h.icon] || ICONS.leaf}</div>
+        <h3>${h.name}</h3>
+        <p>${h.use}</p>
+      </div>`).join('');
+
+    /* The DOMContentLoaded handler in main.js runs after this inline
+       script, so it picks up the freshly injected accordion + reveals. */
+  </script>
+</body>
+</html>

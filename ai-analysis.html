@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Medical Analysis — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="ai" class="ai-stage">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / AI Analysis</p>
+      <h1>AI Medical <span class="text-grad">Report Analysis</span></h1>
+      <p>Upload a medical report image and get an instant, easy-to-read summary powered by our AI engine.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:48px">
+    <div class="container" style="max-width:880px">
+
+      <!-- ===== STEP 1: UPLOAD ===== -->
+      <div id="uploadStep" class="reveal">
+        <div class="dropzone" id="dropzone">
+          <div class="dz-ic" id="dzIcon"></div>
+          <h3>Drag &amp; drop your medical report</h3>
+          <p>or click to browse — supports JPG, PNG screenshots of lab results &amp; reports</p>
+          <input type="file" id="fileInput" accept="image/*" hidden />
+        </div>
+
+        <div class="grid g-3" style="margin-top:26px">
+          <div class="card feature-card reveal reveal-d1" style="padding:22px">
+            <div class="f-ic" id="f1"></div>
+            <h3 style="font-size:1rem">Instant Insights</h3>
+            <p style="font-size:.88rem">Results explained in plain language within seconds.</p>
+          </div>
+          <div class="card feature-card reveal reveal-d2" style="padding:22px">
+            <div class="f-ic" id="f2"></div>
+            <h3 style="font-size:1rem">Private &amp; Secure</h3>
+            <p style="font-size:.88rem">Images are processed securely and never shared.</p>
+          </div>
+          <div class="card feature-card reveal reveal-d3" style="padding:22px">
+            <div class="f-ic" id="f3"></div>
+            <h3 style="font-size:1rem">Holistic Advice</h3>
+            <p style="font-size:.88rem">Nutrition, lifestyle and herbal suggestions included.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: PREVIEW + SCAN ===== -->
+      <div id="scanStep" style="display:none">
+        <div class="card" style="padding:24px;margin-bottom:22px">
+          <div class="ai-scanner">
+            <img id="previewImg" class="preview-img" alt="Uploaded report" />
+            <div class="scan-line"></div>
+          </div>
+        </div>
+        <div class="card ai-loader">
+          <div class="ai-spinner"></div>
+          <h3 style="font-size:1.15rem;margin-bottom:6px">Analyzing your report...</h3>
+          <p id="scanStage" style="color:var(--muted);font-size:.9rem;margin-bottom:18px">Reading document</p>
+          <div class="ai-progress-track"><div class="ai-progress-fill" id="progFill"></div></div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: RESULTS ===== -->
+      <div id="resultStep" style="display:none">
+        <div class="card" style="padding:20px;margin-bottom:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <img id="resultThumb" alt="report" style="width:80px;height:80px;object-fit:cover;border-radius:12px" />
+          <div>
+            <h3 style="font-size:1.1rem">Analysis Complete</h3>
+            <p style="color:var(--muted);font-size:.88rem">AI summary generated · Reviewed structure of your report</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="newScan" style="margin-left:auto">Analyze Another</button>
+        </div>
+
+        <!-- Possible conditions -->
+        <div class="card result-card reveal" style="margin-bottom:22px">
+          <div class="rc-head">
+            <div class="rc-ic" style="background:var(--primary-soft);color:var(--primary)" id="ri1"></div>
+            <h3>Possible Conditions Detected</h3>
+          </div>
+          <div id="conditionsList"></div>
+        </div>
+
+        <div class="grid g-2" style="margin-bottom:22px">
+          <!-- Suggestions -->
+          <div class="card result-card reveal">
+            <div class="rc-head">
+              <div class="rc-ic" style="background:var(--cyan-soft);color:#0a8c98" id="ri2"></div>
+              <h3>Suggestions</h3>
+            </div>
+            <ul class="tip-list" id="suggestionsList"></ul>
+          </div>
+          <!-- Recommendations -->
+          <div class="card result-card reveal">
+            <div class="rc-head">
+              <div class="rc-ic" style="background:var(--green-soft);color:var(--green)" id="ri3"></div>
+              <h3>Health Recommendations</h3>
+            </div>
+            <ul class="tip-list" id="recommendationsList"></ul>
+          </div>
+          <!-- Nutrition -->
+          <div class="card result-card reveal">
+            <div class="rc-head">
+              <div class="rc-ic" style="background:var(--amber-soft);color:#b9791b" id="ri4"></div>
+              <h3>Nutrition Tips</h3>
+            </div>
+            <ul class="tip-list" id="nutritionList"></ul>
+          </div>
+          <!-- Herbal -->
+          <div class="card result-card reveal">
+            <div class="rc-head">
+              <div class="rc-ic" style="background:var(--green-soft);color:var(--green)" id="ri5"></div>
+              <h3>Herbal Remedies</h3>
+            </div>
+            <ul class="tip-list" id="herbalList"></ul>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer reveal">
+          <span id="discIcon"></span>
+          <div>
+            <strong>This AI analysis is for educational purposes only.</strong><br>
+            It is not a medical diagnosis. Always consult a licensed healthcare professional
+            before making any health decisions or starting treatment.
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:26px">
+          <a href="doctors.html" class="btn btn-primary btn-lg">Book a Doctor to Review Results</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script>
+    mountChrome();
+
+    /* Inject icons */
+    document.getElementById('dzIcon').innerHTML = ICONS.upload;
+    document.getElementById('f1').innerHTML = ICONS.sparkle;
+    document.getElementById('f2').innerHTML = ICONS.shield;
+    document.getElementById('f3').innerHTML = ICONS.leaf;
+    document.getElementById('ri1').innerHTML = ICONS.activity;
+    document.getElementById('ri2').innerHTML = ICONS.sparkle;
+    document.getElementById('ri3').innerHTML = ICONS.heart;
+    document.getElementById('ri4').innerHTML = ICONS.apple;
+    document.getElementById('ri5').innerHTML = ICONS.leaf;
+    document.getElementById('discIcon').innerHTML = ICONS.warning;
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadStep = document.getElementById('uploadStep');
+    const scanStep = document.getElementById('scanStep');
+    const resultStep = document.getElementById('resultStep');
+
+    /* ----- File handling ----- */
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drag');
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        toast('Please upload an image file (JPG or PNG).', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = e => startScan(e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    /* ----- Fake scanning animation ----- */
+    const STAGES = ['Reading document', 'Detecting key values', 'Cross-referencing data', 'Generating summary'];
+    function startScan(dataUrl) {
+      document.getElementById('previewImg').src = dataUrl;
+      document.getElementById('resultThumb').src = dataUrl;
+      uploadStep.style.display = 'none';
+      resultStep.style.display = 'none';
+      scanStep.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      let pct = 0, stage = 0;
+      const fill = document.getElementById('progFill');
+      const stageEl = document.getElementById('scanStage');
+      const timer = setInterval(() => {
+        pct += Math.random() * 14 + 5;
+        if (pct > 100) pct = 100;
+        fill.style.width = pct + '%';
+        const s = Math.min(Math.floor(pct / 25), 3);
+        if (s !== stage) { stage = s; stageEl.textContent = STAGES[stage]; }
+        if (pct >= 100) { clearInterval(timer); setTimeout(showResults, 500); }
+      }, 420);
+    }
+
+    /* ----- Render mock results ----- */
+    function showResults() {
+      const r = DB.aiResult;
+      document.getElementById('conditionsList').innerHTML = r.conditions.map(c => `
+        <div class="condition-row">
+          <span class="cr-name">${c.name}</span>
+          <div class="prob-track"><div class="prob-fill" style="width:${c.prob}%;background:${c.color}"></div></div>
+          <span class="cr-pct">${c.prob}%</span>
+        </div>`).join('');
+
+      const tipItem = txt => `<li><span class="ti">${ICONS.check}</span><span>${txt}</span></li>`;
+      document.getElementById('suggestionsList').innerHTML = r.suggestions.map(tipItem).join('');
+      document.getElementById('recommendationsList').innerHTML = r.recommendations.map(tipItem).join('');
+      document.getElementById('nutritionList').innerHTML = r.nutrition.map(tipItem).join('');
+      document.getElementById('herbalList').innerHTML = r.herbal.map(tipItem).join('');
+
+      scanStep.style.display = 'none';
+      resultStep.style.display = 'block';
+      initReveal();
+      toast('AI analysis complete.', 'success', 'Report Ready');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ----- Reset ----- */
+    document.getElementById('newScan').addEventListener('click', () => {
+      resultStep.style.display = 'none';
+      uploadStep.style.display = 'block';
+      fileInput.value = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

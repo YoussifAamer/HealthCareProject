@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="admin" class="no-chatbot">
+
+  <div class="dash">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <a href="../index.html" class="logo">
+        <span class="mark" id="logoIcon"></span> Medi<span>Care</span>
+      </a>
+      <div class="side-label">Platform</div>
+      <div class="side-link active" data-view="overview"><span id="i-overview"></span> Dashboard</div>
+      <div class="side-link" data-view="analytics"><span id="i-analytics"></span> Analytics</div>
+      <div class="side-link" data-view="appointments"><span id="i-appointments"></span> All Appointments</div>
+
+      <div class="side-label">Manage</div>
+      <div class="side-link" data-view="users"><span id="i-users"></span> Users <span class="tag">6</span></div>
+      <div class="side-link" data-view="doctors"><span id="i-doctors"></span> Doctors</div>
+      <div class="side-link" data-view="hospitals"><span id="i-hospitals"></span> Hospitals</div>
+      <div class="side-link" data-view="blood"><span id="i-blood"></span> Blood Banks</div>
+
+      <div class="side-label">Content</div>
+      <div class="side-link" data-view="content"><span id="i-content"></span> Health Content</div>
+      <div class="side-link" data-view="reports"><span id="i-reports"></span> Reports</div>
+
+      <div class="side-label">Account</div>
+      <div class="side-link" data-view="settings"><span id="i-settings"></span> Settings</div>
+      <a href="login.html" class="side-link"><span id="i-logout"></span> Log Out</a>
+    </aside>
+    <div class="sidebar-backdrop" id="backdrop"></div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="dash-main">
+      <header class="dash-topbar">
+        <button class="icon-btn dash-menu-btn" id="menuBtn" style="display:none"><span id="menuIcon"></span></button>
+        <h2 id="topTitle">Dashboard</h2>
+        <div class="topbar-search">
+          <span id="searchIcon"></span>
+          <input type="text" placeholder="Search users, doctors, hospitals..." id="adminSearch" />
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn"><span id="bellIcon"></span><span class="dot"></span></button>
+          <div class="profile-chip" id="profileChip">
+            <div class="avatar av-violet" id="userAv">SA</div>
+            <div>
+              <div class="pc-name" id="userName">Admin</div>
+              <div class="pc-role">Administrator</div>
+            </div>
+            <div class="dropdown" id="profileDrop">
+              <a href="#" data-goto="settings"><span id="d1"></span> Settings</a>
+              <a href="#" data-goto="reports"><span id="d2"></span> Reports</a>
+              <div class="sep"></div>
+              <a href="login.html"><span id="d3"></span> Log Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="dash-body">
+
+        <!-- ===== VIEW: OVERVIEW ===== -->
+        <section class="dash-view active" id="view-overview">
+          <div class="view-title">
+            <h1>Platform Overview</h1>
+            <p>Real-time summary of activity across the MediCare AI Platform.</p>
+          </div>
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--primary-soft);color:var(--primary)" id="s1"></div>
+                <span class="trend up">▲ 14%</span></div>
+              <strong>6</strong><span class="sc-label">Total Users</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--cyan-soft);color:#0a8c98" id="s2"></div>
+                <span class="trend up">▲ 8%</span></div>
+              <strong>12</strong><span class="sc-label">Active Doctors</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--green-soft);color:var(--green)" id="s3"></div>
+                <span class="trend up">▲ 22%</span></div>
+              <strong>47</strong><span class="sc-label">Appointments This Week</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--amber-soft);color:#b9791b" id="s4"></div>
+                <span class="trend up">▲ 31%</span></div>
+              <strong>3.2k</strong><span class="sc-label">AI Reports Analyzed</span>
+            </div>
+          </div>
+
+          <!-- Charts row -->
+          <div class="grid g-2" style="margin-bottom:22px">
+            <div class="panel">
+              <div class="panel-head"><h3>Monthly Registrations</h3></div>
+              <div class="panel-body">
+                <div class="bar-chart" id="regChart"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>User Role Breakdown</h3></div>
+              <div class="panel-body" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+                <div class="donut" style="background:conic-gradient(var(--primary) 0% 50%,var(--cyan) 50% 83%,var(--accent) 83% 100%)">
+                  <div class="donut-center"><strong>6</strong><span>users</span></div>
+                </div>
+                <div class="legend">
+                  <div class="legend-row"><div class="sw" style="background:var(--primary)"></div>Patients <span>3</span></div>
+                  <div class="legend-row"><div class="sw" style="background:var(--cyan)"></div>Doctors <span>2</span></div>
+                  <div class="legend-row"><div class="sw" style="background:var(--accent)"></div>Admins <span>1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent users preview -->
+          <div class="panel">
+            <div class="panel-head"><h3>Recent Users</h3>
+              <a href="#" class="btn btn-line btn-sm" data-goto="users">Manage all</a></div>
+            <div class="panel-body">
+              <div class="table-wrap" id="recentUsersTable"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: ANALYTICS ===== -->
+        <section class="dash-view" id="view-analytics">
+          <div class="view-title"><h1>Analytics</h1><p>Detailed platform usage and performance metrics.</p></div>
+
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--primary-soft);color:var(--primary)" id="a1"></div></div>
+              <strong data-count="3200" data-suffix="">0</strong><span class="sc-label">AI Reports Analyzed</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--green-soft);color:var(--green)" id="a2"></div></div>
+              <strong data-count="1840" data-suffix="">0</strong><span class="sc-label">Appointments Booked</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--cyan-soft);color:#0a8c98" id="a3"></div></div>
+              <strong data-count="98" data-suffix="%">0</strong><span class="sc-label">Platform Uptime</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--amber-soft);color:#b9791b" id="a4"></div></div>
+              <strong data-count="45200" data-suffix="">0</strong><span class="sc-label">Page Views (Month)</span>
+            </div>
+          </div>
+
+          <div class="grid g-2">
+            <div class="panel">
+              <div class="panel-head"><h3>Appointments per Specialty</h3></div>
+              <div class="panel-body">
+                <div class="bar-chart" id="specChart"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Top Countries by Usage</h3></div>
+              <div class="panel-body">
+                <div class="bar-chart" id="countryChart"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: ALL APPOINTMENTS ===== -->
+        <section class="dash-view" id="view-appointments">
+          <div class="view-title"><h1>All Appointments</h1><p>Platform-wide view of all scheduled consultations.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Appointment Log</h3>
+              <span class="badge badge-blue">7 this week</span></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Patient</th><th>Doctor</th><th>Specialty</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+                  <tbody id="allApptsTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: USERS ===== -->
+        <section class="dash-view" id="view-users">
+          <div class="view-title"><h1>User Management</h1><p>View, suspend or remove registered users.</p></div>
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Registered Users</h3>
+              <div class="filter-bar" style="margin:0;box-shadow:none;border:none;padding:0;gap:10px">
+                <input type="text" id="userSearch" placeholder="Search users..." style="padding:8px 14px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg-2);font-size:.9rem" />
+                <select id="roleFilter" style="padding:8px 14px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg-2);font-size:.9rem">
+                  <option value="">All Roles</option>
+                  <option>Patient</option><option>Doctor</option><option>Admin</option>
+                </select>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>User</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="usersTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: DOCTORS ===== -->
+        <section class="dash-view" id="view-doctors">
+          <div class="view-title"><h1>Manage Doctors</h1><p>Review and manage verified doctor listings.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Doctor Listings</h3>
+              <span class="badge badge-green">12 verified</span></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Doctor</th><th>Specialty</th><th>Location</th><th>Rating</th><th>Fee</th><th>Actions</th></tr></thead>
+                  <tbody id="docsTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: HOSPITALS ===== -->
+        <section class="dash-view" id="view-hospitals">
+          <div class="view-title"><h1>Manage Hospitals</h1><p>View and administer partner hospitals.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Partner Hospitals</h3>
+              <span class="badge badge-blue">6 listed</span></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Hospital</th><th>Location</th><th>Beds</th><th>Emergency</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="hospTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: BLOOD BANKS ===== -->
+        <section class="dash-view" id="view-blood">
+          <div class="view-title"><h1>Manage Blood Banks</h1><p>Monitor blood bank availability and contact info.</p></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Blood Bank Listings</h3>
+              <span class="badge badge-red">4 facilities</span></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Blood Bank</th><th>Location</th><th>Emergency</th><th>Contact</th><th>Actions</th></tr></thead>
+                  <tbody id="bbTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: HEALTH CONTENT ===== -->
+        <section class="dash-view" id="view-content">
+          <div class="view-title"><h1>Health Content</h1><p>Oversee platform health articles, diseases and herbal remedies.</p></div>
+          <div class="grid g-3" style="margin-bottom:22px">
+            <div class="stat-card" style="cursor:pointer" onclick="document.querySelector('[data-view=users]').click()">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--primary-soft);color:var(--primary)" id="c1"></div></div>
+              <strong>6</strong><span class="sc-label">Health Articles</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--red-soft);color:var(--red)" id="c2"></div></div>
+              <strong>5</strong><span class="sc-label">Disease Entries</span>
+            </div>
+            <div class="stat-card">
+              <div class="sc-top"><div class="sc-ic" style="background:var(--green-soft);color:var(--green)" id="c3"></div></div>
+              <strong>6</strong><span class="sc-label">Herbal Remedies</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Health Articles</h3></div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Title</th><th>Category</th><th>Author</th><th>Read Time</th><th>Actions</th></tr></thead>
+                  <tbody id="contentTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: REPORTS ===== -->
+        <section class="dash-view" id="view-reports">
+          <div class="view-title"><h1>Platform Reports</h1><p>Downloadable summaries and performance logs.</p></div>
+          <div class="grid g-2">
+            <div class="card feature-card">
+              <div class="f-ic" id="r1"></div>
+              <h3>User Activity Report</h3>
+              <p>Monthly summary of registrations, role breakdown and active sessions.</p>
+              <button class="btn btn-line btn-sm" style="margin-top:14px" onclick="toast('Report downloaded.','success')">Download PDF</button>
+            </div>
+            <div class="card feature-card">
+              <div class="f-ic" id="r2"></div>
+              <h3>Appointment Analytics</h3>
+              <p>Full appointment history with doctor performance breakdown.</p>
+              <button class="btn btn-line btn-sm" style="margin-top:14px" onclick="toast('Report downloaded.','success')">Download PDF</button>
+            </div>
+            <div class="card feature-card">
+              <div class="f-ic" id="r3"></div>
+              <h3>AI Usage Report</h3>
+              <p>Volume of AI report analyses, top queries and disclaimer acknowledgements.</p>
+              <button class="btn btn-line btn-sm" style="margin-top:14px" onclick="toast('Report downloaded.','success')">Download PDF</button>
+            </div>
+            <div class="card feature-card">
+              <div class="f-ic" id="r4"></div>
+              <h3>Blood Bank Inventory</h3>
+              <p>Cross-facility blood type availability snapshot and trend report.</p>
+              <button class="btn btn-line btn-sm" style="margin-top:14px" onclick="toast('Report downloaded.','success')">Download PDF</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW: SETTINGS ===== -->
+        <section class="dash-view" id="view-settings">
+          <div class="view-title"><h1>Platform Settings</h1><p>Manage admin account and platform configuration.</p></div>
+          <div class="panel" style="max-width:600px">
+            <div class="panel-body">
+              <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+                <div class="avatar av-violet" style="width:72px;height:72px;border-radius:20px;font-size:1.5rem" id="profileAv">SA</div>
+                <div>
+                  <h3 id="profileName" style="font-size:1.2rem">Sara Admin</h3>
+                  <p style="color:var(--muted);font-size:.9rem">Administrator · Full access</p>
+                  <span class="badge badge-red" style="margin-top:5px">Admin</span>
+                </div>
+              </div>
+              <div class="composer-grid">
+                <div class="field"><label>Admin Name</label><input type="text" id="pfName" value="Sara Admin" /></div>
+                <div class="field"><label>Email</label><input type="email" value="admin@mail.com" /></div>
+                <div class="field"><label>New Password</label><input type="password" placeholder="Leave blank to keep current" /></div>
+              </div>
+              <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">
+                <h4 style="font-size:1rem;margin-bottom:14px">Platform Flags</h4>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600">
+                    <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary)">
+                    Enable AI Report Analysis
+                  </label>
+                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600">
+                    <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary)">
+                    Show chatbot assistant on public pages
+                  </label>
+                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600">
+                    <input type="checkbox" style="width:18px;height:18px;accent-color:var(--primary)">
+                    Maintenance mode
+                  </label>
+                </div>
+              </div>
+              <button class="btn btn-primary" style="margin-top:22px" onclick="toast('Settings saved.','success')">Save Changes</button>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /dash-body -->
+    </div><!-- /dash-main -->
+  </div><!-- /dash -->
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/dashboard.js"></script>
+  <script>
+    /* ----- Icons ----- */
+    document.getElementById('logoIcon').innerHTML = ICONS.heart;
+    document.getElementById('menuIcon').innerHTML = ICONS.menu;
+    document.getElementById('searchIcon').innerHTML = ICONS.search;
+    document.getElementById('bellIcon').innerHTML = ICONS.bell;
+    document.getElementById('d1').innerHTML = ICONS.settings;
+    document.getElementById('d2').innerHTML = ICONS.chart;
+    document.getElementById('d3').innerHTML = ICONS.logout;
+
+    const sideIcons = { overview:'layout', analytics:'chart', appointments:'calendar',
+      users:'users', doctors:'stethoscope', hospitals:'hospital', blood:'droplet',
+      content:'doc', reports:'doc', settings:'settings', logout:'logout' };
+    Object.entries(sideIcons).forEach(([k,v]) => {
+      const el = document.getElementById('i-'+k); if(el) el.innerHTML = ICONS[v]||'';
+    });
+    ['s1','s2','s3','s4'].forEach((id,i) =>
+      document.getElementById(id).innerHTML = [ICONS.users,ICONS.stethoscope,ICONS.calendar,ICONS.robot][i]);
+    ['a1','a2','a3','a4'].forEach((id,i) =>
+      document.getElementById(id).innerHTML = [ICONS.robot,ICONS.calendar,ICONS.activity,ICONS.chart][i]);
+    ['c1','c2','c3'].forEach((id,i) =>
+      document.getElementById(id).innerHTML = [ICONS.doc,ICONS.pill,ICONS.leaf][i]);
+    ['r1','r2','r3','r4'].forEach((id,i) =>
+      document.getElementById(id).innerHTML = [ICONS.users,ICONS.calendar,ICONS.robot,ICONS.droplet][i]);
+
+    /* ----- Session ----- */
+    const user = Session.get() || { name: 'Sara Admin', role: 'admin' };
+    const uName = user.name || 'Sara Admin';
+    document.getElementById('userName').textContent = uName;
+    document.getElementById('userAv').textContent = initials(uName);
+
+    /* ----- Dashboard nav ----- */
+    initDashNav('Dashboard', {
+      overview:'Dashboard', analytics:'Analytics', appointments:'All Appointments',
+      users:'User Management', doctors:'Manage Doctors', hospitals:'Manage Hospitals',
+      blood:'Blood Banks', content:'Health Content', reports:'Reports', settings:'Settings'
+    });
+
+    /* ----- Monthly registrations bar chart ----- */
+    const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+    const regs   = [3, 5, 8, 6, 10, 12];
+    document.getElementById('regChart').innerHTML = months.map((m,i) => `
+      <div class="bar-col">
+        <div class="bar" style="height:${(regs[i]/12)*100}%" data-val="${regs[i]} users"></div>
+        <span>${m}</span>
+      </div>`).join('');
+
+    /* Specialty chart */
+    const specs = ['Cardio','Neuro','Peds','Derm','Ortho','Gyn'];
+    const specV = [28,19,24,16,22,11];
+    document.getElementById('specChart').innerHTML = specs.map((s,i) => `
+      <div class="bar-col">
+        <div class="bar" style="height:${(specV[i]/28)*100}%;background:var(--grad-soft);border:2px solid var(--primary)" data-val="${specV[i]} appts"></div>
+        <span style="font-size:.72rem">${s}</span>
+      </div>`).join('');
+
+    /* Country chart */
+    const countries = ['Egypt','UAE','KSA','USA','UK'];
+    const countV    = [42,28,22,16,12];
+    document.getElementById('countryChart').innerHTML = countries.map((c,i) => `
+      <div class="bar-col">
+        <div class="bar" style="height:${(countV[i]/42)*100}%" data-val="${countV[i]}% users"></div>
+        <span style="font-size:.72rem">${c}</span>
+      </div>`).join('');
+
+    /* ----- Users table ----- */
+    let usersData = [...DB.users];
+    function renderUsers() {
+      const q = document.getElementById('userSearch').value.toLowerCase();
+      const role = document.getElementById('roleFilter').value;
+      const list = usersData.filter(u =>
+        u.name.toLowerCase().includes(q) && (!role || u.role === role));
+      document.getElementById('usersTbody').innerHTML = list.map(u => `
+        <tr>
+          <td><div class="td-user">
+            <div class="avatar ${u.av}" style="width:36px;height:36px;border-radius:10px;font-size:.78rem">${initials(u.name)}</div>
+            <div><strong>${u.name}</strong><span>${u.email}</span></div>
+          </div></td>
+          <td><span class="badge ${u.role==='Admin'?'badge-red':u.role==='Doctor'?'badge-blue':'badge-green'}">${u.role}</span></td>
+          <td>${u.joined}</td>
+          <td><span class="badge ${u.status==='Active'?'badge-green':'badge-amber'}">${u.status}</span></td>
+          <td><div class="t-action">
+            <button class="t-btn edit" title="Edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+            <button class="t-btn del"  title="Delete" onclick="toast('User removed from platform.','error')">${ICONS.trash}</button>
+          </div></td>
+        </tr>`).join('');
+    }
+    ['userSearch','roleFilter'].forEach(id =>
+      document.getElementById(id).addEventListener('input', renderUsers));
+    renderUsers();
+
+    /* ----- Recent users (overview) ----- */
+    document.getElementById('recentUsersTable').innerHTML = `
+      <div class="table-wrap"><table>
+        <thead><tr><th>User</th><th>Role</th><th>Joined</th><th>Status</th></tr></thead>
+        <tbody>${DB.users.slice(0,4).map(u => `
+          <tr>
+            <td><div class="td-user">
+              <div class="avatar ${u.av}" style="width:34px;height:34px;border-radius:9px;font-size:.78rem">${initials(u.name)}</div>
+              <strong>${u.name}</strong>
+            </div></td>
+            <td><span class="badge ${u.role==='Admin'?'badge-red':u.role==='Doctor'?'badge-blue':'badge-green'}">${u.role}</span></td>
+            <td>${u.joined}</td>
+            <td><span class="badge ${u.status==='Active'?'badge-green':'badge-amber'}">${u.status}</span></td>
+          </tr>`).join('')}</tbody>
+      </table></div>`;
+
+    /* ----- All appointments ----- */
+    const allAppts = DB.appointments.map(a => ({ patient: 'Ahmed Saleh', ...a }))
+      .concat(DB.bookings.map(b => ({
+        patient: b.patient, doctor: 'Dr. Layla Hassan', specialty: 'Cardiology',
+        day: b.day, mon: b.mon, time: b.time, status: b.status })));
+    document.getElementById('allApptsTbody').innerHTML = allAppts.map(a => `
+      <tr>
+        <td><strong>${a.patient}</strong></td>
+        <td>${a.doctor || 'Dr. Layla Hassan'}</td>
+        <td>${a.specialty || 'Cardiology'}</td>
+        <td>${a.mon} ${a.day}</td><td>${a.time}</td>
+        <td><span class="badge ${a.status==='Confirmed'?'badge-green':'badge-amber'}">${a.status}</span></td>
+      </tr>`).join('');
+
+    /* ----- Doctors table ----- */
+    document.getElementById('docsTbody').innerHTML = DB.doctors.map(d => `
+      <tr>
+        <td><div class="td-user">
+          <div class="avatar ${d.av||''}" style="width:34px;height:34px;border-radius:9px;font-size:.78rem">${initials(d.name)}</div>
+          <strong>${d.name}</strong>
+        </div></td>
+        <td>${d.specialty}</td>
+        <td>${d.city}, ${d.country}</td>
+        <td><span class="rating">${ICONS.star} ${d.rating}</span></td>
+        <td>$${d.fee}</td>
+        <td><div class="t-action">
+          <button class="t-btn edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+          <button class="t-btn del"  onclick="toast('Doctor listing removed.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* ----- Hospitals table ----- */
+    document.getElementById('hospTbody').innerHTML = DB.hospitals.map(h => `
+      <tr>
+        <td><strong>${h.name}</strong></td>
+        <td>${h.city}, ${h.country}</td>
+        <td>${h.beds}</td>
+        <td>${h.emergency ? '<span class="badge badge-red">Yes</span>' : '<span class="badge badge-blue">No</span>'}</td>
+        <td><span class="badge ${h.status==='open'?'badge-green':'badge-amber'}">${h.status}</span></td>
+        <td><div class="t-action">
+          <button class="t-btn edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+          <button class="t-btn del"  onclick="toast('Hospital removed.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* ----- Blood banks table ----- */
+    document.getElementById('bbTbody').innerHTML = DB.bloodBanks.map(b => `
+      <tr>
+        <td><strong>${b.name}</strong></td>
+        <td>${b.city}, ${b.country}</td>
+        <td>${b.emergency ? '<span class="badge badge-red">24/7</span>' : '<span class="badge badge-blue">Standard</span>'}</td>
+        <td>${b.phone}</td>
+        <td><div class="t-action">
+          <button class="t-btn edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+          <button class="t-btn del"  onclick="toast('Blood bank removed.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* ----- Health content table ----- */
+    document.getElementById('contentTbody').innerHTML = DB.healthTips.map(t => `
+      <tr>
+        <td><strong>${t.title}</strong></td>
+        <td><span class="badge badge-blue">${t.cat}</span></td>
+        <td>${t.author}</td>
+        <td>${t.read}</td>
+        <td><div class="t-action">
+          <button class="t-btn edit" onclick="toast('Edit mode coming soon.','info')">${ICONS.edit}</button>
+          <button class="t-btn del"  onclick="toast('Article removed.','error')">${ICONS.trash}</button>
+        </div></td>
+      </tr>`).join('');
+
+    /* Counter animation handled by main.js DOMContentLoaded */
+
+    /* ----- Admin global search ----- */
+    document.getElementById('adminSearch').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.target.value.trim()) {
+        goView('users');
+        document.getElementById('userSearch').value = e.target.value;
+        renderUsers();
+      }
+    });
+  </script>
+</body>
+</html>

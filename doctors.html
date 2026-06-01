@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Doctors — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="doctors">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Doctors</p>
+      <h1>Find Your <span class="text-grad">Doctor</span></h1>
+      <p>Browse 850+ verified specialists. Filter by specialty and country, compare ratings, and book in seconds.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:48px">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="filter-bar reveal">
+        <div class="search-field">
+          <span id="searchIcon"></span>
+          <input type="text" id="docSearch" placeholder="Search by doctor name..." />
+        </div>
+        <select id="specFilter"><option value="">All Specialties</option></select>
+        <select id="countryFilter"><option value="">All Countries</option></select>
+        <select id="sortBy">
+          <option value="rating">Sort: Top Rated</option>
+          <option value="exp">Sort: Most Experienced</option>
+          <option value="fee">Sort: Lowest Fee</option>
+        </select>
+      </div>
+
+      <p id="resultCount" style="color:var(--muted);font-weight:600;margin-bottom:20px"></p>
+
+      <!-- Doctor grid -->
+      <div class="grid g-3" id="docGrid"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <!-- ===== BOOKING MODAL ===== -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Book Appointment</h3>
+        <button class="modal-close" data-close-modal>&times;</button>
+      </div>
+      <div class="modal-body" id="bookingBody"></div>
+    </div>
+  </div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script src=" js/booking.js"></script>
+  <script>
+    mountChrome();
+    document.getElementById('searchIcon').innerHTML = ICONS.search;
+
+    /* Populate filter selects */
+    const specF = document.getElementById('specFilter');
+    const countryF = document.getElementById('countryFilter');
+    DB.specialties.forEach(s => specF.innerHTML += `<option value="${s}">${s}</option>`);
+    DB.countries.forEach(c => countryF.innerHTML += `<option value="${c}">${c}</option>`);
+
+    function doctorCard(d) {
+      const stars = ICONS.star;
+      return `
+      <div class="card entity-card reveal">
+        <div class="ec-banner" style="background:var(--grad-soft)"></div>
+        <div class="avatar ${d.av || ''} ec-avatar" style="font-size:1.4rem">${initials(d.name)}</div>
+        <div class="ec-body">
+          <h3>${d.name}</h3>
+          <p class="ec-spec">${d.specialty}</p>
+          <div class="ec-meta">
+            <span>${ICONS.pin} ${d.city}, ${d.country}</span>
+            <span>${ICONS.clock} ${d.exp} yrs exp</span>
+          </div>
+          <div class="ec-meta">
+            <span class="badge badge-blue">$${d.fee} / visit</span>
+            <span class="badge badge-green">Available</span>
+          </div>
+          <div class="ec-foot">
+            <span class="rating">${stars} ${d.rating} <span style="color:var(--muted);font-weight:500">(${d.reviews})</span></span>
+            <button class="btn btn-primary btn-sm" onclick="openBooking(${d.id})">Book Now</button>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function render() {
+      const q = document.getElementById('docSearch').value.toLowerCase();
+      const spec = specF.value, country = countryF.value, sort = document.getElementById('sortBy').value;
+      let list = DB.doctors.filter(d =>
+        d.name.toLowerCase().includes(q) &&
+        (!spec || d.specialty === spec) &&
+        (!country || d.country === country));
+      list.sort((a, b) => sort === 'rating' ? b.rating - a.rating
+        : sort === 'exp' ? b.exp - a.exp : a.fee - b.fee);
+
+      const grid = document.getElementById('docGrid');
+      document.getElementById('resultCount').textContent = `${list.length} doctor${list.length !== 1 ? 's' : ''} found`;
+      if (!list.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">${ICONS.search}<h3>No doctors found</h3><p>Try adjusting your search or filters.</p></div>`;
+        return;
+      }
+      grid.innerHTML = list.map(doctorCard).join('');
+      initReveal();
+    }
+
+    ['docSearch','specFilter','countryFilter','sortBy'].forEach(id =>
+      document.getElementById(id).addEventListener('input', render));
+    render();
+  </script>
+</body>
+</html>

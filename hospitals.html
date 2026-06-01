@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospitals — MediCare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css" />
+</head>
+<body data-page="hospitals">
+
+  <div id="site-nav"></div>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Hospitals</p>
+      <h1>Trusted <span class="text-grad">Hospitals</span></h1>
+      <p>Explore accredited hospitals and clinics with real-time availability, contact details and location.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:48px">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="filter-bar reveal">
+        <div class="search-field">
+          <span id="searchIcon"></span>
+          <input type="text" id="hSearch" placeholder="Search hospitals by name..." />
+        </div>
+        <select id="countryFilter"><option value="">All Countries</option></select>
+        <select id="statusFilter">
+          <option value="">Any Availability</option>
+          <option value="open">Open Now</option>
+          <option value="busy">Busy</option>
+        </select>
+      </div>
+
+      <p id="resultCount" style="color:var(--muted);font-weight:600;margin-bottom:20px"></p>
+
+      <!-- Hospital grid -->
+      <div class="grid g-3" id="hospGrid"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src=" js/data.js"></script>
+  <script src=" js/main.js"></script>
+  <script src=" js/components.js"></script>
+  <script>
+    mountChrome();
+    document.getElementById('searchIcon').innerHTML = ICONS.search;
+
+    /* Populate country filter */
+    const countryF = document.getElementById('countryFilter');
+    DB.countries.forEach(c => countryF.innerHTML += `<option value="${c}">${c}</option>`);
+
+    function hospitalCard(h) {
+      const statusBadge = h.status === 'open'
+        ? '<span class="badge badge-green">Open Now</span>'
+        : '<span class="badge badge-amber">Busy</span>';
+      const emergency = h.emergency
+        ? '<span class="badge badge-red">24/7 Emergency</span>' : '';
+      return `
+      <div class="card entity-card reveal">
+        <div class="ec-banner" style="background:var(--grad-deep);display:grid;place-items:center">
+          <div style="color:rgba(255,255,255,.9)">${ICONS.hospital}</div>
+        </div>
+        <div class="avatar ${h.av || ''} ec-avatar" style="font-size:1.3rem">${initials(h.name)}</div>
+        <div class="ec-body">
+          <h3>${h.name}</h3>
+          <p class="ec-spec">${h.city}, ${h.country}</p>
+          <div class="ec-meta">
+            <span>${ICONS.pin} ${h.address}</span>
+          </div>
+          <div class="ec-meta">
+            <span>${ICONS.phone} ${h.phone}</span>
+            <span>${ICONS.layout} ${h.beds} beds</span>
+          </div>
+          <div class="ec-meta">${statusBadge} ${emergency}</div>
+          <div class="map-placeholder" style="height:120px;margin:6px 0 16px">
+            <div class="pin"></div>
+            <span class="lbl">📍 ${h.city}</span>
+          </div>
+          <div class="ec-foot">
+            <span class="rating">${ICONS.star} ${h.rating}</span>
+            <a href="contact.html" class="btn btn-primary btn-sm">Contact</a>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function render() {
+      const q = document.getElementById('hSearch').value.toLowerCase();
+      const country = countryF.value;
+      const status = document.getElementById('statusFilter').value;
+      const list = DB.hospitals.filter(h =>
+        h.name.toLowerCase().includes(q) &&
+        (!country || h.country === country) &&
+        (!status || h.status === status));
+
+      const grid = document.getElementById('hospGrid');
+      document.getElementById('resultCount').textContent =
+        `${list.length} hospital${list.length !== 1 ? 's' : ''} found`;
+      if (!list.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">${ICONS.hospital}<h3>No hospitals found</h3><p>Try adjusting your search or filters.</p></div>`;
+        return;
+      }
+      grid.innerHTML = list.map(hospitalCard).join('');
+      initReveal();
+    }
+
+    ['hSearch','countryFilter','statusFilter'].forEach(id =>
+      document.getElementById(id).addEventListener('input', render));
+    render();
+  </script>
+</body>
+</html>
