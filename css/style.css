@@ -217,12 +217,19 @@ input, select, textarea { font-family: var(--font-body); }
 .hero-card-main .doc-row p { font-size: .85rem; color: var(--muted); }
 .pulse-line {
   height: 60px; border-radius: 14px; background: var(--grad-soft);
-  display: grid; place-items: center; margin-bottom: 18px; overflow: hidden;
+   margin-bottom: 18px;
 }
 .pulse-line svg { width: 100%; height: 40px; }
-.pulse-line path { stroke: var(--primary); stroke-width: 3; fill: none;
-  stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 3s ease forwards infinite; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
+.pulse-line path {
+   stroke: var(--primary);
+    stroke-width: 3; 
+    fill: none;
+  stroke-dasharray: 600; 
+  stroke-dashoffset: 600;
+   animation: draw 3s ease forwards infinite; }
+@keyframes draw { 
+  to { stroke-dashoffset: 0; }
+ }
 
 .mini-stat { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); }
 .mini-stat span { color: var(--muted); font-size: .9rem; }
@@ -240,8 +247,7 @@ input, select, textarea { font-family: var(--font-body); }
 .fb-2 { bottom: 48px; right: -34px; animation: floaty 5s ease-in-out infinite 1.4s; }
 @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 
-.hero-blob { position: absolute; inset: -30px; z-index: 1;
-  background: var(--grad-brand); filter: blur(60px); opacity: .16; border-radius: 50%; }
+
 
 /* ----------  7. CARDS / FEATURES  ---------- */
 .card {
@@ -798,12 +804,7 @@ textarea.field-area:focus { outline: none; border-color: var(--primary); backgro
   color: #fff; display: grid; place-items: center; flex-shrink: 0; }
 
 /* ----------  24. SCROLL REVEAL  ---------- */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.in { opacity: 1; transform: translateY(0); }
-.reveal-d1 { transition-delay: .08s; }
-.reveal-d2 { transition-delay: .16s; }
-.reveal-d3 { transition-delay: .24s; }
-.reveal-d4 { transition-delay: .32s; }
+
 
 /* ----------  25. AVATAR HELPER  ---------- */
 .avatar { display: grid; place-items: center; color: #fff; font-family: var(--font-display);
