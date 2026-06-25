@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medi Care Pharmacy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="side-nav"></div>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <h1 class="logo">⚕ MediCare<span>Pharmacy</span></h1>
+      <p class="tagline">Your Trusted Pharmacy Hub</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <h2 class="section-title">Medical Specializations</h2>
+    
+    <div class="specializations-grid">
+      
+      <section class="spec-container">
+        <h3 class="spec-title">Cardiology</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge">Heart Care</div>
+            <h4>Lipitor (Atorvastatin)</h4>
+            <p class="med-desc">Used to lower cholesterol and reduce the risk of heart disease.</p>
+            <h5 class="price">$20</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Lipitor (Atorvastatin)')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge">Heart Care</div>
+            <h4>Metoprolol</h4>
+            <p class="med-desc">A beta-blocker used to treat high blood pressure and chest pain.</p>
+            <h5 class="price">$20</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Metoprolol')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="spec-container">
+        <h3 class="spec-title">Neurology</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--cyan-soft); color: var(--cyan);">Nerve Care</div>
+            <h4>Gabapentin</h4>
+            <p class="med-desc">Used to treat nerve pain caused by shingles and manage seizures.</p>
+            <h5 class="price">$40</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Gabapentin')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--cyan-soft); color: var(--cyan);">Nerve Care</div>
+            <h4>Levetiracetam</h4>
+            <p class="med-desc">Commonly prescribed medication to control epileptic seizures.</p>
+            <h5 class="price">$40</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Levetiracetam')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="spec-container">
+        <h3 class="spec-title">Pediatrics</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--amber-soft); color: var(--amber);">Children's Health</div>
+            <h4>Infant Tylenol</h4>
+            <p class="med-desc">Temporary pain relief and fever reducer customized for infants.</p>
+            <h5 class="price">$15</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Infant Tylenol')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--amber-soft); color: var(--amber);">Children's Health</div>
+            <h4>Amoxicillin Suspension</h4>
+            <p class="med-desc">Child-friendly liquid antibiotic for pediatric bacterial infections.</p>
+            <h5 class="price">$15</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Amoxicillin Suspension')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="spec-container">
+        <h3 class="spec-title">Gynecology</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--red-soft); color: var(--red);">Women's Care</div>
+            <h4>Prenatal Vitamins</h4>
+            <p class="med-desc">Essential nutrients and folic acid supporting maternal wellness.</p>
+            <h5 class="price">$30</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Prenatal Vitamins')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--red-soft); color: var(--red);">Women's Care</div>
+            <h4>Clomiphene</h4>
+            <p class="med-desc">Commonly utilized to treat ovulatory dysfunction in women.</p>
+            <h5 class="price">$30</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Clomiphene')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="spec-container">
+        <h3 class="spec-title">Orthopedics</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--line); color: var(--ink-2);">Bone & Joint</div>
+            <h4>Meloxicam</h4>
+            <p class="med-desc">Nonsteroidal anti-inflammatory drug used to manage arthritis pain.</p>
+            <h5 class="price">$25</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Meloxicam')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--line); color: var(--ink-2);">Bone & Joint</div>
+            <h4>Alendronate</h4>
+            <p class="med-desc">Helps maintain bone density and treats or prevents osteoporosis.</p>
+            <h5 class="price">$25</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Alendronate')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="spec-container">
+        <h3 class="spec-title">Dermatology</h3>
+        <div class="med-cards-grid">
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--green-soft); color: var(--green);">Skin Care</div>
+            <h4>Hydrocortisone Cream</h4>
+            <p class="med-desc">Relieves skin swelling, itching, redness, and minor irritations.</p>
+            <h5 class="price">$60</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Hydrocortisone Cream')">Add To Cart</button>
+          </div>
+          <div class="med-card">
+            <div class="med-badge" style="background-color: var(--green-soft); color: var(--green);">Skin Care</div>
+            <h4>Tretinoin Gel</h4>
+            <p class="med-desc">Topical retinoid variant used for severe acne and skin renewal.</p>
+            <h5 class="price">$60</h5>
+            <button class="btn-buy" onclick="openPurchaseModal('Tretinoin Gel')">Add To Cart</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <h3>Checkout Details</h3>
+      <p>Buying: <strong id="selectedMedName" style="color: var(--primary);">Medicine</strong></p>
+      <form id="purchaseForm" onsubmit="handleCheckout(event)">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="phoneNum">Phone Number</label>
+          <input type="tel" id="phoneNum" required placeholder="+1 234 567 890">
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+          <input type="text" id="address" required placeholder="123 Street Name, City">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closePurchaseModal()">Cancel</button>
+          <button type="submit" class="btn-submit">Confirm Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-notification" id="successToast">
+    Purchased Successfully
+  </div>
+
+    <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="navbar__logo-icon">⚕</span>
+        <span class="navbar__logo-text">Medi<span>Care</span></span>
+      </div>
+      <p class="footer__copy">© 2026 MediCare Pharmacy. All rights reserved. Always consult your physician before use.</p>
+    </div>
+  </footer>
+
+  <script>
+    const modal = document.getElementById('checkoutModal');
+    const toast = document.getElementById('successToast');
+    const selectedMedNameText = document.getElementById('selectedMedName');
+    const purchaseForm = document.getElementById('purchaseForm');
+
+    function openPurchaseModal(medName) {
+      selectedMedNameText.textContent = medName;
+      modal.classList.add('active');
+    }
+
+    function closePurchaseModal() {
+      modal.classList.remove('active');
+      purchaseForm.reset();
+    }
+
+    function handleCheckout(event) {
+      event.preventDefault(); // Stop standard form submission reload
+      
+      // Close out user info gathering prompt
+      closePurchaseModal();
+
+      // Show the success toast
+      toast.classList.add('visible');
+
+      // Make it disappear precisely after 2 seconds
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
