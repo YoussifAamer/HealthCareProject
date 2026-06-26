@@ -34,7 +34,6 @@ function mountChrome() {
         <div class="nav-actions">
           <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
           <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
-          <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
           <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
       </div>
@@ -88,7 +87,7 @@ function mountChrome() {
         </div>
         <div class="footer-bottom">
           <span>© 2026 MediCare AI Platform. All rights reserved.</span>
-          // <a href="Fast/fbook.html">Book Now</a>
+          <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
           <span>Built as a competition project · Frontend demo · Privacy · Terms</span>
         </div>
       </div>
