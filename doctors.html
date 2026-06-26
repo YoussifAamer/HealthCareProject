@@ -46,8 +46,9 @@
     </div>
   </section>
 
-  <div id="site-footer"></div>
 
+  <div id="site-footer"></div>
+  
   <!-- ===== BOOKING MODAL ===== -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
@@ -58,6 +59,7 @@
       <div class="modal-body" id="bookingBody"></div>
     </div>
   </div>
+
 
   <script src=" js/data.js"></script>
   <script src=" js/main.js"></script>
@@ -78,13 +80,14 @@
       return `
       <div class="card entity-card reveal">
         <div class="ec-banner" style="background:var(--grad-soft)"></div>
-        <div class="avatar ${d.av || ''} ec-avatar" style="font-size:1.4rem">${initials(d.name)}</div>
+        <div class="avatar avatar-2 ${d.av || ''} ec-avatar" style="font-size:1.4rem">${initials(d.name)}</div>
         <div class="ec-body">
           <h3>${d.name}</h3>
           <p class="ec-spec">${d.specialty}</p>
           <div class="ec-meta">
             <span>${ICONS.pin} ${d.city}, ${d.country}</span>
             <span>${ICONS.clock} ${d.exp} yrs exp</span>
+            <li><a href="Pharmacy/pharmacy.html" target="_blank">⚕</a></li>
           </div>
           <div class="ec-meta">
             <span class="badge badge-blue">$${d.fee} / visit</span>
