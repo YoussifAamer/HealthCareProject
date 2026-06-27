@@ -98,7 +98,7 @@ function doctorCardHTML(d) {
   return `
   <div class="card entity-card">
     <div class="ec-banner" style="background:var(--grad-soft)"></div>
-    <div class="avatar ${d.av || ''} ec-avatar" style="font-size:1.4rem">${initials(d.name)}</div>
+    <div class="avatar avatar-2 ${d.av || ''} ec-avatar" style="font-size:1.4rem">${initials(d.name)}</div>
     <div class="ec-body">
       <h3>${d.name}</h3>
       <p class="ec-spec">${d.specialty}</p>
