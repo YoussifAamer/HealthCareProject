@@ -88,17 +88,50 @@ body {
     align-items: center;
 }
 
-.logo {
+/* تصميم مربع اللوجو الخلفية المتدرجة */
+.logo-icon-box {
+    width: 42px;
+    height: 42px;
+    background: var(--grad-brand); /* بيستخدم التدرج الأزرق لـ Cyan الجاهز عندك */
+    border-radius: 12px; /* حواف دائرية متناسقة مع التصميم */
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--ink);
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(26, 102, 255, 0.2); /* تأثير توهج بسيط */
+    transition: transform 0.2s ease;
 }
 
-.logo-accent {
+/* تظبيط حجم أيقونة القلب الأبيض وجعلها مفرغة */
+.heart-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+/* حركة تفاعلية عند تمرير الماوس فوق اللوجو */
+.logo:hover .logo-icon-box {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* تظبيط حاوية اللوجو بحيث الأيقونة والكلام يكونوا جنب بعض وعلى خط واحد */
+.logo {
+    display: flex;
+    align-items: center; /* بيخلي الكلام والأيقونة على نفس المحاذاة العمودية */
+    gap: 12px;           /* مسافة مناسبة بين المربع الأزرق والاسم */
+    text-decoration: none;
+}
+
+/* تكبير حجم الخط الخاص بالاسم وتظبيطه */
+.logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;     /* كبرنا حجم الخط هنا عشان يبقى واضح وكبير */
+    color: var(--ink);
+    line-height: 1;      /* بيمنع أي مسافات وهمية تحت أو فوق الحرف */
+}
+
+.logo-accent{
     color: var(--primary);
 }
 
