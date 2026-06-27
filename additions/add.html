@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare AI - Health Habits Assessment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="add.css">
+</head>
+<body>
+
+    <!-- Header & Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+                  <div class="logo">
+    <div class="logo-icon-box">
+        <!-- كود الـ SVG الخاص بالقلب -->
+        <svg class="heart-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <span class="logo-text">Medi <span class="logo-accent">Care</span></span>
+</div>
+            <div class="tagline">Advanced Lifestyle Analytics</div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- 1. HERO SECTION -->
+        <section id="hero-section" class="hero-card">
+            <h1>🔮 AI Health Habits Center</h1>
+            <p>Our AI analyzes your daily routines, eating choices, hydration, sleep patterns, and exercise to calculate your overall lifestyle score.</p>
+            <div class="hero-bullets">
+                <span>✔ Balanced Nutrition</span>
+                <span>✔ Active Living</span>
+                <span>✔ Optimized Daily Routines</span>
+            </div>
+            <button class="btn-primary" onclick="startForm()">Start Assessment</button>
+        </section>
+
+        <!-- 2. INTERACTIVE WIZARD FORM -->
+        <section id="wizard-section" class="card hidden">
+            <!-- Step Indicators -->
+            <div class="steps-indicator">
+                <span id="step-dot-1" class="step-dot active">1</span>
+                <span id="step-dot-2" class="step-dot">2</span>
+                <span id="step-dot-3" class="step-dot">3</span>
+            </div>
+
+            <!-- STEP 1: Basic Information -->
+            <div id="step-1" class="wizard-step">
+                <h2 class="step-title">Step 1: Basic Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="input-age" placeholder="e.g. 14" min="1" max="120">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="input-gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" id="input-height" placeholder="e.g. 165">
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="input-weight" placeholder="e.g. 55">
+                    </div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="btn-primary" onclick="nextStep(2)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Nutrition & Hydration -->
+            <div id="step-2" class="wizard-step hidden">
+                <h2 class="step-title">Step 2: Nutrition & Hydration</h2>
+                
+                <div class="form-group">
+                    <label>🍔 Overall Diet Quality</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="diet" value="healthy" checked> Healthy (Veggies & Fruits)</label>
+                        <label><input type="radio" name="diet" value="average"> Average</label>
+                        <label><input type="radio" name="diet" value="poor"> Poor (Processed/Sugary)</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🍕 Fast Food Frequency</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="fastfood" value="rarely" checked> Rarely/Never</label>
+                        <label><input type="radio" name="fastfood" value="sometimes"> 1-2 times a week</label>
+                        <label><input type="radio" name="fastfood" value="often"> 3+ times a week</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>💧 Daily Water Intake: <span id="water-val">2</span> Liters</label>
+                    <input type="range" id="input-water" min="1" max="5" value="2" step="0.5" oninput="document.getElementById('water-val').innerText = this.value">
+                </div>
+
+                <div class="wizard-buttons">
+                    <button class="btn-secondary" onclick="nextStep(1)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(3)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Activity, Sleep & Habits -->
+            <div id="step-3" class="wizard-step hidden">
+                <h2 class="step-title">Step 3: Activity & Daily Routines</h2>
+                
+                <div class="form-group">
+                    <label>🏃 Physical Activity / Sports</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="activity" value="high"> High (Daily Sports/Gym)</label>
+                        <label><input type="radio" name="activity" value="moderate" checked> Moderate (Walking/Stretching)</label>
+                        <label><input type="radio" name="activity" value="low"> Low (Mostly Sitting)</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>😴 Daily Sleep Hours: <span id="sleep-val">8</span> Hours</label>
+                    <input type="range" id="input-sleep" min="3" max="12" value="8" oninput="document.getElementById('sleep-val').innerText = this.value">
+                </div>
+
+                <div class="form-group">
+                    <label>📱 Daily Recreational Screen Time</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="screentime" value="low" checked> Under 2 Hours</label>
+                        <label><input type="radio" name="screentime" value="medium"> 2-5 Hours</label>
+                        <label><input type="radio" name="screentime" value="high"> 5+ Hours</label>
+                    </div>
+                </div>
+
+                <div class="wizard-buttons">
+                    <button class="btn-secondary" onclick="nextStep(2)">Back</button>
+                    <button class="btn-submit" onclick="runAnalysis()">✨ Analyze My Health Habits</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LOADING ANIMATION SCREEN -->
+        <section id="loading-section" class="card hidden text-center">
+            <div class="spinner"></div>
+            <h2 id="loading-status">Analyzing Lifestyle Choices...</h2>
+            <div class="progress-bar-container">
+                <div id="loading-progress" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <span id="loading-percentage">0%</span>
+        </section>
+
+        <!-- 4. RESULTS PREDICTION REPORT -->
+        <section id="results-section" class="hidden">
+            <h2 class="section-title">Your Personalized Lifestyle Balance Report</h2>
+            
+            <div class="results-grid">
+                <!-- Left: Health Score -->
+                <div class="card text-center">
+                    <h3>Overall Habits Score</h3>
+                    <div class="circle-gauge">
+                        <span id="score-num">100%</span>
+                    </div>
+                    <h4 style="color: var(--green); margin-top: 12px;">Excellent Balance</h4>
+                </div>
+
+                <!-- Right: Habit Level Bars -->
+                <div class="card">
+                    <h3>Lifestyle Category Scores</h3>
+                    
+                    <div class="meter-group">
+                        <div class="meter-label"><span>Nutrition & Diet Quality</span><span id="habit-val-nutrition">100%</span></div>
+                        <div class="meter-track"><div id="meter-fill-nutrition" class="meter-fill" style="width: 0%"></div></div>
+                    </div>
+                    <div class="meter-group">
+                        <div class="meter-label"><span>Fitness & Movement</span><span id="habit-val-fitness">100%</span></div>
+                        <div class="meter-track"><div id="meter-fill-fitness" class="meter-fill" style="width: 0%; background: var(--cyan)"></div></div>
+                    </div>
+                    <div class="meter-group">
+                        <div class="meter-label"><span>Sleep & Recovery Rest</span><span id="habit-val-sleep">100%</span></div>
+                        <div class="meter-track"><div id="meter-fill-sleep" class="meter-fill" style="width: 0%; background: var(--accent)"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habits Timeline / Roadmap Forecast -->
+            <div class="card" style="margin-top: 24px;">
+                <h3>Your Lifestyle Roadmap</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Current Habit Baseline</h4>
+                        <p id="timeline-t1">Your current metrics show your daily routine choices mapped out against standard health guidelines.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Energy Levels Impact (Next few weeks)</h4>
+                        <p id="timeline-t2">Maintaining active metrics will directly keep your daily concentration and stamina sharp during long study sessions.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Long-term Strength & Wellness (Future Outlook)</h4>
+                        <p id="timeline-t3">Consistently practicing active movement patterns scales up posture integrity and cardiovascular performance metrics gracefully over time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tailored Recommendations -->
+            <div class="card" style="margin-top: 24px;">
+                <h3>Tailored Habit Recommendations</h3>
+                <div class="rec-grid">
+                    <div class="rec-card border-green">
+                        <h4>🥗 Nutrition Tip</h4>
+                        <p id="rec-nutrition">Your nutrient balance is great. Keep prioritizing homemade whole foods over fast food items.</p>
+                    </div>
+                    <div class="rec-card border-blue">
+                        <h4>🏃 Movement Tip</h4>
+                        <p id="rec-movement">Try integrating daily active warmups, active sports routines, or light afternoon walks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Actions -->
+            <div class="report-actions">
+                <button class="btn-secondary" onclick="window.print()">🖨️ Print Lifestyle Profile</button>
+                <button class="btn-primary" onclick="alert('PDF Generated securely.')">📥 Save Lifestyle Report</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="add.js"></script>
+</body>
+</html>

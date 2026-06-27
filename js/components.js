@@ -87,7 +87,9 @@ function mountChrome() {
         </div>
         <div class="footer-bottom">
           <span>© 2026 MediCare AI Platform. All rights reserved.</span>
-          <a href="Fast/fbook.html">Book Now</a>
+          <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
+          <a href="additions/add.html" class="btn btn-primary btn-sm">Track your health</a>
+          <a href="Sos/sos.html" class="btn btn-primary btn-sm">SOS</a>
           <span>Built as a competition project · Frontend demo · Privacy · Terms</span>
         </div>
       </div>
