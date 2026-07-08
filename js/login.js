@@ -1,4 +1,30 @@
-const API_BASE = "http://elitecoders.runasp.net/api/Auth";
+function getApiBase() {
+  const protocol = window.location.protocol === "https:" ? "https:" : "http:";
+  return `${protocol}//elitecoders.runasp.net/api/Auth`;
+}
+
+async function requestJson(path, payload) {
+  const res = await fetch(`${getApiBase()}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const text = await res.text();
+  let data = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch (err) {
+    data = null;
+  }
+
+  if (!res.ok) {
+    const message = data?.message || data?.title || data?.errors?.$?.[0] || text || `Request failed (${res.status})`;
+    throw new Error(message);
+  }
+
+  return data;
+}
 
 function normalizeRole(role) {
   const value = (role || "").toString().trim().toLowerCase();
@@ -60,26 +86,20 @@ async function register() {
   };
 
   try {
-    const res = await fetch(`${API_BASE}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user_info)
-    });
-
-    const data = await res.json();
+    const data = await requestJson("/register", user_info);
     const payload = data?.data || data;
 
-    if (data.success || payload?.token) {
+    if (data?.success || payload?.token) {
       persistAuth(payload, user_info.role);
       showResult("reg-result", true, `✅ Registered as ${payload.fullName || user_info.fullName} (${user_info.role})`);
       setTimeout(() => redirectByRole(user_info.role), 800);
     } else {
-      showResult("reg-result", false, `❌ ${data.message || "Registration failed."}`);
-      toast(data.message || "Registration failed.", "error");
+      showResult("reg-result", false, `❌ ${data?.message || "Registration failed."}`);
+      toast(data?.message || "Registration failed.", "error");
     }
   } catch (err) {
-    showResult("reg-result", false, `❌ Network error: ${err.message}`);
-    toast("Network error while registering.", "error");
+    showResult("reg-result", false, `❌ ${err.message}`);
+    toast(err.message || "Network error while registering.", "error");
   }
 }
 
@@ -92,26 +112,20 @@ async function login() {
   };
 
   try {
-    const res = await fetch(`${API_BASE}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user_info)
-    });
-
-    const data = await res.json();
+    const data = await requestJson("/login", user_info);
     const payload = data?.data || data;
 
-    if (data.success || payload?.token) {
+    if (data?.success || payload?.token) {
       persistAuth(payload, user_info.role);
       showResult("log-result", true, `✅ Welcome back, ${payload.fullName || user_info.email}!`);
       setTimeout(() => redirectByRole(user_info.role), 800);
     } else {
-      showResult("log-result", false, `❌ ${data.message || "Login failed."}`);
-      toast(data.message || "Login failed.", "error");
+      showResult("log-result", false, `❌ ${data?.message || "Login failed."}`);
+      toast(data?.message || "Login failed.", "error");
     }
   } catch (err) {
-    showResult("log-result", false, `❌ Network error: ${err.message}`);
-    toast("Network error while logging in.", "error");
+    showResult("log-result", false, `❌ ${err.message}`);
+    toast(err.message || "Network error while logging in.", "error");
   }
 }
 
