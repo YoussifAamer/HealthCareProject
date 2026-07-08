@@ -30,34 +30,34 @@
 
         <div class="field" id="f-name">
           <label>Full Name</label>
-          <input type="text" id="fullName" placeholder="Your full name" />
+          <input type="text" id="reg-name" placeholder="Your full name" />
           <span class="hint">Please enter your full name.</span>
         </div>
 
         <div class="field" id="f-email">
           <label>Email Address</label>
-          <input type="email" id="email" placeholder="you@example.com" />
+          <input type="email" id="reg-email" placeholder="you@example.com" />
           <span class="hint">Please enter a valid email address.</span>
         </div>
 
         <div class="field" id="f-pass">
           <label>Password</label>
-          <input type="password" id="password" placeholder="At least 6 characters" />
+          <input type="password" id="reg-password" placeholder="At least 6 characters" />
           <span class="hint">Password must be at least 6 characters.</span>
         </div>
 
         <div class="field" id="f-cpass">
           <label>Confirm Password</label>
-          <input type="password" id="confirm" placeholder="Re-enter your password" />
+          <input type="password" id="reg-confirm" placeholder="Re-enter your password" />
           <span class="hint">Passwords do not match.</span>
         </div>
 
         <div class="field">
           <label>Select Your Role</label>
           <div class="role-pick">
-            <div class="role-opt sel" data-role="patient"><span id="r1"></span><span>Patient</span></div>
-            <div class="role-opt" data-role="doctor"><span id="r2"></span><span>Doctor</span></div>
-            <div class="role-opt" data-role="admin"><span id="r3"></span><span>Admin</span></div>
+            <div class="role-opt sel" data-role="Patient"><span id="r1"></span><span>Patient</span></div>
+            <div class="role-opt" data-role="Doctor"><span id="r2"></span><span>Doctor</span></div>
+            <div class="role-opt" data-role="Admin"><span id="r3"></span><span>Admin</span></div>
           </div>
         </div>
 
@@ -66,6 +66,8 @@
           I agree to the Terms of Service and Privacy Policy.
         </label>
 
+        <input type="hidden" id="reg-role" value="patient" />
+        <div id="reg-result" style="display:none;margin-bottom:12px;font-weight:600"></div>
         <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
 
         <p class="auth-foot">Already have an account? <a href="login.html">Sign in</a></p>
@@ -75,6 +77,7 @@
 
   <script src=" js/data.js"></script>
   <script src=" js/main.js"></script>
+  <script src="js/login.js"></script>
   <script>
     logoMark.innerHTML = ICONS.heart;
     a1.innerHTML = ICONS.user; a2.innerHTML = ICONS.stethoscope; a3.innerHTML = ICONS.shield;
@@ -82,48 +85,17 @@
     [r1,r2,r3].forEach(d => { d.querySelector('svg').style.width = '20px'; d.querySelector('svg').style.height = '20px'; });
 
     let selectedRole = 'patient';
+    const roleInput = document.getElementById('reg-role');
+    if (roleInput) roleInput.value = selectedRole;
+
     document.querySelectorAll('.role-opt').forEach(opt => {
       opt.addEventListener('click', () => {
         document.querySelectorAll('.role-opt').forEach(o => o.classList.remove('sel'));
         opt.classList.add('sel');
         selectedRole = opt.dataset.role;
+        if (roleInput) roleInput.value = selectedRole;
       });
     });
-
-    const dest = { patient: 'patient-dashboard.html', doctor: 'doctor-dashboard.html', admin: 'admin-dashboard.html' };
-
-    document.getElementById('signupForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('fullName');
-      const email = document.getElementById('email');
-      const pass = document.getElementById('password');
-      const conf = document.getElementById('confirm');
-      let ok = true;
-
-      const nameOk = name.value.trim().length >= 3;
-      document.getElementById('f-name').classList.toggle('invalid', !nameOk); if (!nameOk) ok = false;
-
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
-      document.getElementById('f-email').classList.toggle('invalid', !emailOk); if (!emailOk) ok = false;
-
-      const passOk = pass.value.length >= 6;
-      document.getElementById('f-pass').classList.toggle('invalid', !passOk); if (!passOk) ok = false;
-
-      const confOk = conf.value === pass.value && conf.value.length > 0;
-      document.getElementById('f-cpass').classList.toggle('invalid', !confOk); if (!confOk) ok = false;
-
-      if (!document.getElementById('terms').checked) {
-        toast('Please accept the Terms of Service.', 'error'); return;
-      }
-      if (!ok) { toast('Please fix the highlighted fields.', 'error'); return; }
-
-      Session.set({ name: name.value.trim(), role: selectedRole });
-      toast('Account created! Redirecting...', 'success');
-      setTimeout(() => location.href = dest[selectedRole], 1100);
-    });
-
-    ['fullName','email','password','confirm'].forEach(id => document.getElementById(id)
-      .addEventListener('input', e => e.target.closest('.field').classList.remove('invalid')));
   </script>
 </body>
 </html>

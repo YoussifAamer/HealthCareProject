@@ -32,22 +32,22 @@
 
         <div class="field" id="f-email">
           <label>Email Address</label>
-          <input type="email" id="email" placeholder="you@example.com" />
+          <input type="email" id="log-email" placeholder="you@example.com" />
           <span class="hint">Please enter a valid email address.</span>
         </div>
 
         <div class="field" id="f-pass">
           <label>Password</label>
-          <input type="password" id="password" placeholder="••••••••" />
+          <input type="password" id="log-password" placeholder="••••••••" />
           <span class="hint">Password must be at least 6 characters.</span>
         </div>
 
         <div class="field">
           <label>Login as</label>
-          <select id="role">
-            <option value="patient">Patient</option>
-            <option value="doctor">Doctor</option>
-            <option value="admin">Admin</option>
+          <select id="log-role">
+            <option value="Patient">Patient</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Admin">Admin</option>
           </select>
         </div>
 
@@ -58,6 +58,7 @@
           <a href="#" style="color:var(--primary);font-weight:700">Forgot password?</a>
         </div>
 
+        <div id="log-result" style="display:none;margin-bottom:12px;font-weight:600"></div>
         <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
 
         <div class="divider">or quick demo login</div>
@@ -74,44 +75,12 @@
 
   <script src=" js/data.js"></script>
   <script src=" js/main.js"></script>
+  <script src="js/login.js"></script>
   <script>
     logoMark.innerHTML = ICONS.heart;
     a1.innerHTML = ICONS.stethoscope; a2.innerHTML = ICONS.calendar; a3.innerHTML = ICONS.robot;
     d1.innerHTML = ICONS.user; d2.innerHTML = ICONS.stethoscope; d3.innerHTML = ICONS.shield;
     [d1,d2,d3].forEach(d => { d.querySelector('svg').style.width = '20px'; d.querySelector('svg').style.height = '20px'; });
-
-    const dest = { patient: 'patient-dashboard.html', doctor: 'doctor-dashboard.html', admin: 'admin-dashboard.html' };
-
-    function go(role, name) {
-      Session.set({ name: name || 'Demo User', role });
-      toast('Signing you in...', 'info');
-      setTimeout(() => location.href = dest[role], 900);
-    }
-
-    /* Form validation */
-    document.getElementById('loginForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('email');
-      const pass = document.getElementById('password');
-      let ok = true;
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
-      document.getElementById('f-email').classList.toggle('invalid', !emailOk);
-      if (!emailOk) ok = false;
-      const passOk = pass.value.length >= 6;
-      document.getElementById('f-pass').classList.toggle('invalid', !passOk);
-      if (!passOk) ok = false;
-      if (!ok) { toast('Please fix the highlighted fields.', 'error'); return; }
-      go(document.getElementById('role').value, email.value.split('@')[0]);
-    });
-
-    /* Quick demo login */
-    document.querySelectorAll('.role-opt').forEach(opt => {
-      opt.addEventListener('click', () => go(opt.dataset.demo, 'Demo ' + opt.dataset.demo));
-    });
-
-    /* clear invalid on input */
-    ['email','password'].forEach(id => document.getElementById(id)
-      .addEventListener('input', e => e.target.closest('.field').classList.remove('invalid')));
   </script>
 </body>
 </html>
