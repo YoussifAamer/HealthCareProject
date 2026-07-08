@@ -15,7 +15,8 @@ function mountChrome() {
     { id: 'ai', label: 'AI Analysis', href: 'ai-analysis.html' },
     { id: 'tips', label: 'Health Tips', href: 'health-tips.html' },
     { id: 'about', label: 'About', href: 'about.html' },
-    { id: 'contact', label: 'Contact', href: 'contact.html' }
+    { id: 'contact', label: 'Contact', href: 'contact.html' },
+    { id: 'pharmacy', label: '⚕', href: 'Pharmacy/pharmacy.html' },
   ];
 
   /* ---- NAVBAR ---- */
@@ -86,6 +87,9 @@ function mountChrome() {
         </div>
         <div class="footer-bottom">
           <span>© 2026 MediCare AI Platform. All rights reserved.</span>
+          <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
+          <a href="additions/add.html" class="btn btn-primary btn-sm">Track your health</a>
+          <a href="Sos/sos.html" class="btn btn-primary btn-sm">SOS</a>
           <span>Built as a competition project · Frontend demo · Privacy · Terms</span>
         </div>
       </div>
