@@ -32,7 +32,11 @@
     --nav-h:          76px;
     --font-display:   'Sora', sans-serif;
     --font-body:      'Plus Jakarta Sans', sans-serif;
+    --grad-brand: linear-gradient(135deg, #1a66ff 0%, #15c5d6 100%);
+    --font-display: 'Sora', sans-serif;
 }
+
+
 
 * {
     margin: 0;
@@ -47,7 +51,169 @@ body {
     min-height: 100vh;
     padding-bottom: 60px;
 }
+/* ── المظهر الجديد والموحد للـ Navbar ── */
+/* ── الهيكل الرئيسي للـ Navbar ── */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    height: var(--nav-h);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+}
 
+.header-inner {
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* بيوزع اللوجو في طرف والروابط في الطرف التاني تلقائياً */
+}
+
+/* ستايل الـ Brand واللوجو */
+/* تصغير اللوجو وتزحيحه للشمال */
+.brand2 {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* المسافة بين علامة القلب والاسم */
+    flex-shrink: 0;
+    text-decoration: none;
+    margin-left: -10px; /* التزحيح للشمال عشان يوسع المساحة للمنيو */
+}
+
+/* تصغير الـ Box بتاع الأيقونة حاجة بسيطة */
+.brand-mark2 {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--grad-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--sh-sm);
+}
+
+.brand-mark2 svg {
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+}
+
+/* تصغير خط الاسم عشان يطابق الـ Landing */
+.logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px; /* صغرنا الخط هنا من 26 لـ 20 */
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.5px; /* تضييق بسيط بين الحروف لشكل مودرن */
+}
+
+.logo-accent {
+    color: var(--primary);
+}
+
+/* القائمة والروابط */
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* مسافة متناسقة تضمن مرونة العناصر بدون ضغط */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .18s ease, color .18s ease;
+}
+
+.nav-item:hover {
+    background: var(--bg-2);
+    color: var(--ink);
+}
+
+/* الحواف الناعمة والخلفيات الملونة للأيقونات (الـ Chips) */
+.nav-item .chip {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border: none;
+    padding: 0;
+}
+
+.nav-item .chip svg {
+    width: 14px !important;
+    height: 14px !important;
+    stroke-width: 2.2 !important;
+    fill: none !important;
+    display: block;
+}
+
+/* مطابقة الألوان المفرغة تماماً مع الصورة الناجحة */
+.chip.c-primary { background: var(--primary-soft); }
+.chip.c-primary svg { stroke: var(--primary) !important; }
+
+.chip.c-cyan { background: var(--cyan-soft); }
+.chip.c-cyan svg { stroke: var(--cyan) !important; }
+
+.chip.c-green { background: var(--green-soft); }
+.chip.c-green svg { stroke: var(--green) !important; }
+
+.chip.c-red { background: var(--red-soft); }
+.chip.c-red svg { stroke: var(--red) !important; }
+
+.chip.c-accent { background: #f1edfe; }
+.chip.c-accent svg { stroke: var(--accent) !important; }
+
+.chip.c-amber { background: var(--amber-soft); }
+.chip.c-amber svg { stroke: var(--amber) !important; }
+
+.chip.c-muted { background: #f0f2f5; }
+.chip.c-muted svg { stroke: var(--muted) !important; }
+
+/* زر القائمة للشاشات الصغيرة */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.menu-toggle svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--ink);
+}
+
+@media(max-width: 1080px) {
+    .main-nav { display: none; }
+    .menu-toggle { display: flex; }
+}
 /* ── Navbar ── */
 .navbar {
     height: var(--nav-h);
@@ -113,7 +279,7 @@ body {
 }
 
 .logo-accent{
-    color: var(--primary);
+    color: var(--ink);
 }
 .tagline {
     color: var(--muted);
@@ -639,3 +805,142 @@ input:checked + .slider-toggle:before {
         align-items: center;
     }
 }
+
+/* حل مشكلة نزول الفوتر لآخر الصفحة تماماً وثباته */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* الكود الأساسي للفوتر بنفس ألوان الصورة المظلمة */
+.footer {
+    background-color: #060f1e; /* اللون الكحلي الغامق نفس الصورة */
+    color: #94a3b8; /* لون النصوص الفرعية */
+    padding: 60px 0 30px 0;
+    margin-top: auto; /* ده اللي بيجبر الفوتر ينزل تحت خالص لو الصفحة فاضية */
+    width: 100%;
+    clear: both;
+    margin-bottom: -100px; /* لتنظيف أي مشاكل float من العناصر اللي قبله */
+}
+
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* تقسيم الأعمدة الأربعة */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr; /* عمود البراند عريض والباقي متساوي */
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* الخط الرفيع اللي قبل الحقوق */
+}
+
+/* تصميم اللوجو المضيء */
+.brand{margin-bottom: 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;font-family:var(--font-display);font-weight:700;font-size:1.12rem;color:var(--ink);}
+.brand-mark{
+  width:38px;height:38px;border-radius:11px;background:var(--grad-brand);
+  display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-glow);
+  flex-shrink:0;
+}
+.brand-mark svg{width:20px;height:20px;stroke:#fff;}
+
+.brand h3{margin:0;font-size:1.12rem;color:#fff;line-height:1.2;}
+.brand h3 span{margin:0;font-size:1.12rem;color:var(--primary);line-height:1.2;}
+
+.footer .brand-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 320px;
+    margin-bottom: 20px;
+}
+
+/* زر تويتر 𝕏 المربع الصغير */
+.footer .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: #111c2e;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.footer .social-icon:hover {
+    background-color: #1e293b;
+}
+
+/* عناوين القوائم */
+.footer-links h5 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* تنسيق اللينكات */
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 12px;
+}
+
+.footer-links ul li a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.footer-links ul li a:hover {
+    color: #38bdf8; /* تغيير اللون عند التمرير بالماوس */
+}
+
+/* الجزء السفلي (الحقوق وباقي البيانات) */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 25px;
+    font-size: 12px;
+    color: #64748b;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* تجاوب التصميم مع الشاشات الصغيرة (Responsive) */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+
+
+.logo { display: flex; align-items: center; gap: 11px; font-family: var(--font-display); font-weight: 800; font-size: 1.28rem; }
+.logo .mark {
+  width: 40px; height: 40px; border-radius: 12px; background: var(--grad-brand);
+  display: grid; place-items: center; color: #fff; box-shadow: var(--sh-glow);
+}
+.logo .mark svg { width: 22px; height: 22px; }
+.logo span { color: var(--primary); }

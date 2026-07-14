@@ -10,9 +10,35 @@
 </head>
 <body data-page="hospitals">
 
-  <div id="site-nav"></div>
+  <header class="site-header">
+  <div class="header-inner wrap">
+    <a class="brand" href="#">
+      <span class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Medi Care
+    </a>
 
-  <!-- Page header -->
+    <nav class="main-nav">
+      <ul>
+        <li><a class="nav-item"  target="_blank" href="doctors.html"><span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><circle cx="18" cy="16" r="3"/><path d="M10 9v3a6 6 0 0 0 6 6"/></svg></span>Doctors</a></li>
+        <li><a class="nav-item" href="hospitals.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M12 7v4M10 9h4"/></svg></span>Hospitals</a></li>
+        <li><a class="nav-item" href="blood-banks.html"><span class="chip c-red"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 7.2 6 11.5A6 6 0 0 1 6 13.5C6 9.2 12 2 12 2z"/></svg></span>Blood Banks</a></li>
+        <li><a class="nav-item" href="ai-analysis.html"><span class="chip c-accent"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>AI Analysis</a></li>
+        <li><a class="nav-item" href="health-tips.html"><span class="chip c-amber"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.6 1 .6 1.6v.1h6v-.1c0-.6.1-1.2.6-1.6A6 6 0 0 0 12 3z"/></svg></span>Health Tips</a></li>
+        <li><a class="nav-item" href="pharmacy.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/><path d="M12 12v3M10.5 13.5h3"/></svg></span>Pharmacy</a></li>
+        <li><a class="nav-item" href="contact.html"><span class="chip c-cyan"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12a10 10 0 1 1-4-8"/><path d="M22 5l-8 6-4-3"/></svg></span>Contact</a></li>
+      </ul>
+    </nav>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
   <header class="page-head">
     <div class="container">
       <p class="breadcrumb"><a href="../index.html">Home</a> / Hospitals</p>
@@ -24,7 +50,6 @@
   <section class="section" style="padding-top:48px">
     <div class="container">
 
-      <!-- Filter bar -->
       <div class="filter-bar reveal">
         <div class="search-field">
           <span id="searchIcon"></span>
@@ -40,7 +65,6 @@
 
       <p id="resultCount" style="color:var(--muted);font-weight:600;margin-bottom:20px"></p>
 
-      <!-- Hospital grid -->
       <div class="grid g-3" id="hospGrid"></div>
     </div>
   </section>
@@ -50,13 +74,24 @@
   <script src=" js/data.js"></script>
   <script src=" js/main.js"></script>
   <script src=" js/components.js"></script>
+  <script src=" js/hospital-expand.js"></script>
+  
   <script>
     mountChrome();
     document.getElementById('searchIcon').innerHTML = ICONS.search;
 
-    /* Populate country filter */
     const countryF = document.getElementById('countryFilter');
-    DB.countries.forEach(c => countryF.innerHTML += `<option value="${c}">${c}</option>`);
+    
+    function populateFilters() {
+      // إجبار التكبير قبل ملء الفلتر
+      if (typeof expandHospitalsTo50 === 'function') expandHospitalsTo50();
+      
+      const currentSelection = countryF.value;
+      countryF.innerHTML = '<option value="">All Countries</option>';
+      const uniqueCountries = [...new Set(DB.hospitals.map(h => h.country))];
+      uniqueCountries.forEach(c => countryF.innerHTML += `<option value="${c}">${c}</option>`);
+      countryF.value = currentSelection;
+    }
 
     function hospitalCard(h) {
       const statusBadge = h.status === 'open'
@@ -94,28 +129,42 @@
     }
 
     function render() {
+      // الكبسولة السحرية: إجبار استدعاء التكبير فوراً لمنع التصفير من أي سكريبت آخر
+      if (typeof expandHospitalsTo50 === 'function') expandHospitalsTo50();
+
       const q = document.getElementById('hSearch').value.toLowerCase();
       const country = countryF.value;
       const status = document.getElementById('statusFilter').value;
+      
       const list = DB.hospitals.filter(h =>
         h.name.toLowerCase().includes(q) &&
         (!country || h.country === country) &&
         (!status || h.status === status));
 
       const grid = document.getElementById('hospGrid');
-      document.getElementById('resultCount').textContent =
-        `${list.length} hospital${list.length !== 1 ? 's' : ''} found`;
+      document.getElementById('resultCount').textContent = `${list.length} hospital${list.length !== 1 ? 's' : ''} found`;
+      
       if (!list.length) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">${ICONS.hospital}<h3>No hospitals found</h3><p>Try adjusting your search or filters.</p></div>`;
         return;
       }
       grid.innerHTML = list.map(hospitalCard).join('');
-      initReveal();
+      if (typeof initReveal === 'function') initReveal();
     }
 
     ['hSearch','countryFilter','statusFilter'].forEach(id =>
       document.getElementById(id).addEventListener('input', render));
+      
+    // تكرار الحماية مع الحركات والـ Scrolling
+    window.addEventListener('scroll', () => {
+      if(DB.hospitals.length < 50) { expandHospitalsTo50(); render(); }
+    });
+
+    // تشغيل مبدئي مزدوج لكسر أي عملية تصفير متأخرة
+    populateFilters();
     render();
+    setTimeout(() => { populateFilters(); render(); }, 300);
+    setTimeout(() => { populateFilters(); render(); }, 800);
   </script>
 </body>
 </html>
