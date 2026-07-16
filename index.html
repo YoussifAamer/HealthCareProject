@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MediCare AI</title>
-  <!-- <meta name="description" content="Search doctors, hospitals & blood banks, book appointments and get AI-powered medical insights — all in one modern healthcare platform." /> -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,42 +11,35 @@
 </head>
 <body>
 
-  <!-- ============ NAVBAR ============ -->
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="index.html" class="logo">
-        <span class="mark"></span> Medi<span>Care</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="doctors.html">Doctors</a></li>
-        <li><a href="hospitals.html">Hospitals</a></li>
-        <li><a href="blood-banks.html">Blood Banks</a></li>
-        <li><a href="ai-analysis.html">AI Analysis</a></li>
-        <li><a href="health-tips.html">Health Tips</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="Pharmacy/pharmacy.html" target="_blank">⚕</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
-        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
-        <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
-      </div>
-    </div>
-  </nav>
+  <header class="site-header">
+  <div class="header-inner wrap">
+    <a class="brand" href="#">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Medi Care
+    </a>
 
-  <!-- ============ HERO ============ -->
+    <div class="header-auth-group">
+      <a href="signup.html" class="btn-clean-signup">Sign Up</a>
+      <a href="login.html" class="btn-clean-login">Log In</a>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
   <header class="hero">
-    <div class="container hero-grid">
+    <div class="container hero-grid-new">
       <div class="hero-copy">
         <span class="eyebrow ">AI-Powered Healthcare Platform</span>
-        <h1>Your health, <span class="text-grad">intelligently</span> connected.</h1>
-        <p class="">Find trusted doctors, book appointments in seconds, locate hospitals and blood banks, and get instant AI insights on your medical reports — all in one place.</p>
-        <div class="hero-cta ">
-          <a href="signup.html" class="btn btn-primary btn-lg" id="getStarted">Get Started</a>
-          <a href="doctors.html" class="btn btn-ghost btn-lg" id="findDoctor">Find a Doctor</a>
-        </div>
+        <h1 class="batekha">Your health, <span class="text-grad">intelligently</span> connected.</h1>
+        <p class="hero-description">Find trusted doctors, book appointments in seconds, locate hospitals and blood banks, and get instant AI insights on your medical reports — all in one place.</p>
+        
         <div class="hero-stats ">
           <div class="stat"><strong >+850</strong><span>Verified Doctors</span></div>
           <div class="stat"><strong >+120</strong><span>Partner Hospitals</span></div>
@@ -55,32 +47,27 @@
         </div>
       </div>
 
-      <div class="hero-visual ">
-        <div class="hero-card-main">
-          <div class="doc-row">
-            <div class="avatar av-cyan" style="width:56px;height:56px;border-radius:16px">LH</div>
-            <div>
-              <h4>Dr.Layla Hassan</h4>
-              <p>Cardiology • 14 Yrs Experience</p>
-            </div>
-            <span class="badge badge-green" style="margin-left:auto">Available</span>
+      <div class="hero-visual-consolidated">
+        
+        <div class="hero-feature-panel">
+          <h3 class="panel-title">Your Benefits</h3>
+          <div class="benefit-item">
+            <span class="benefit-icon ic-primary"></span>
+            <div><h4>Fast Booking</h4><p>Confirm appointments in seconds.</p></div>
           </div>
-          <div class="pulse-line">
-            <svg viewBox="0 0 300 40" preserveAspectRatio="none">
-              <path d="M0 20 L60 20 L75 6 L90 34 L105 20 L150 20 L165 8 L180 32 L195 20 L300 20"/>
-            </svg>
+          <div class="benefit-item">
+            <span class="benefit-icon ic-cyan"></span>
+            <div><h4>Resource Locator</h4><p>Find blood and hospital resources.</p></div>
           </div>
-          <div class="mini-stat"><span>Heart Rate</span><strong>72 bpm</strong></div>
-          <div class="mini-stat"><span>AI Report Status</span><strong style="color:var(--green)">Analyzed ✓</strong></div>
-          <div class="mini-stat"><span>Next Appointment</span><strong>Jun 18, 10:30 AM</strong></div>
+          <div class="benefit-item">
+            <span class="benefit-icon ic-green"></span>
+            <div><h4>AI Report Analysis</h4><p>Simplified insights, plain language.</p></div>
+          </div>
         </div>
-       
-         
       </div>
     </div>
   </header>
 
-  <!-- ============ TRUST / WHAT IS ============ -->
   <section class="section">
     <div class="container split">
       <div class=" ">
@@ -116,7 +103,6 @@
     </div>
   </section>
 
-  <!-- ============ FEATURES ============ -->
   <section class="section" style="background:var(--bg-2)">
     <div class="container">
       <div class="section-head  ">
@@ -135,10 +121,9 @@
     </div>
   </section>
 
-  <!-- ============ AI HIGHLIGHT ============ -->
   <section class="section">
     <div class="container split">
-      <div class="     " style="order:2">
+      <div class="    " style="order:2">
         <div class="visual-panel" style="background:linear-gradient(150deg,#0b3fa8,#6c4cf0)">
           <h3 style="color:#fff;position:relative">AI medical insights, made simple</h3>
           <p style="color:rgba(255,255,255,.78);position:relative;margin-bottom:20px">See what your report could mean — in plain language.</p>
@@ -157,7 +142,6 @@
     </div>
   </section>
 
-  <!-- ============ STATS STRIP ============ -->
   <section class="section-sm stats-strip">
     <div class="container">
       <div class="grid g-4">
@@ -169,7 +153,6 @@
     </div>
   </section>
 
-  <!-- ============ HOW IT WORKS ============ -->
   <section class="section">
     <div class="container">
       <div class="section-head  ">
@@ -186,7 +169,6 @@
     </div>
   </section>
 
-  <!-- ============ TESTIMONIALS ============ -->
   <section class="section" style="background:var(--bg-2)">
     <div class="container">
       <div class="section-head  ">
@@ -198,7 +180,6 @@
     </div>
   </section>
 
-  <!-- ============ FAQ ============ -->
   <section class="section">
     <div class="container" style="max-width:820px">
       <div class="section-head  ">
@@ -210,21 +191,19 @@
     </div>
   </section>
 
-  <!-- ============ CTA BAND ============ -->
   <section class="section" style="padding-top:0">
     <div class="container">
       <div class="cta-band  ">
         <h2>Ready to take control of your health?</h2>
         <p>Join thousands of patients and doctors already using MediCare AI to make healthcare smarter, faster and more human.</p>
         <div class="hero-cta">
-          <a href="signup.html" class="btn btn-ghost btn-lg">Get Started Free</a>
-          <a href="ai-analysis.html" class="btn btn-primary btn-lg" style="background:#fff;color:var(--primary)">Analyze Reports</a>
+          <a href="signup.html" class="btn btn-ghost btn-lg">Get Started</a>
+         
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
@@ -268,9 +247,9 @@
       </div>
       <div class="footer-bottom">
         <span>© 2026 MediCare AI Platform. All rights reserved.</span>
-        <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
+        <!-- <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
          <a href="additions/add.html" class="btn btn-primary btn-sm">Track your health</a>
-        <a href="Sos/sos.html" class="btn btn-primary btn-sm">SOS</a>
+        <a href="Sos/sos.html" class="btn btn-primary btn-sm">SOS</a> -->
         <span>Built as a competition project · Frontend demo · Privacy · Terms</span>
       </div>
     </div>
@@ -282,7 +261,13 @@
     /* ---- Inject icons ---- */
     document.querySelector('.logo .mark').innerHTML = ICONS.heart;
     document.querySelectorAll('.footer .logo .mark').forEach(m => m.innerHTML = ICONS.heart);
-    fb1ic.innerHTML = ICONS.robot; fb2ic.innerHTML = ICONS.check;
+    /* Icon injection for benefit-items */
+    document.querySelectorAll('.benefit-icon').forEach(iconSpan => {
+      if (iconSpan.classList.contains('ic-primary')) iconSpan.innerHTML = ICONS.calendar;
+      if (iconSpan.classList.contains('ic-cyan')) iconSpan.innerHTML = ICONS.hospital;
+      if (iconSpan.classList.contains('ic-green')) iconSpan.innerHTML = ICONS.robot;
+    });
+    
     [cl1,cl2,cl3,cl4].forEach(c => c.innerHTML = ICONS.check);
     vp1.innerHTML = ICONS.user; vp2.innerHTML = ICONS.stethoscope; vp3.innerHTML = ICONS.shield;
     ai1.innerHTML = ICONS.activity; ai2.innerHTML = ICONS.leaf; ai3.innerHTML = ICONS.arrow;
