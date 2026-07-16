@@ -6,18 +6,210 @@
   <title>Patient Dashboard — MediCare AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href=" css/style.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <style>
+    body {
+      padding-top: 70px; /* مسافة للـ Header المثبت علوياً */
+    }
+
+    /* هيدر متناسق تماماً يبدأ بعد الـ Sidebar ولا يطفو فوقه */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 260px; /* يبدأ بعد الـ Sidebar مباشرة */
+      width: calc(100% - 260px); /* يملأ المساحة المتبقية فقط */
+      height: 70px;
+      background: #0f172a; /* نفس اللون الداكن للـ Sidebar */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    /* لتوسيط محتويات الناف بار بالكامل */
+    .header-inner {
+      width: 90%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* توسيط القائمة في المساحة المتاحة */
+      margin-left: 40px;
+      
+    }
+
+    /* الروابط بنفس الـ Items الأصلية وبألوان تتماشى مع الخلفية الداكنة */
+    .main-nav ul {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8; /* لون نص هادئ */
+      text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* أيقونات الـ Chips داخل الـ Nav Bar الجديد */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .chip svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ألوان الأيقونات المخصصة */
+    .c-primary { color: #3b82f6; }
+    .c-green { color: #10b981; }
+    .c-red { color: #ef4444; }
+    .c-accent { color: #8b5cf6; }
+    .c-amber { color: #f59e0b; }
+
+    /* لضبط توازن التصميم للـ dashboard */
+    .dash {
+      height: calc(100vh - 70px);
+    }
+
+    @media (max-width: 992px) {
+      .site-header {
+        left: 0; /* يعود لملء الشاشة بالكامل في الموبايل */
+        width: 100%;
+      }
+      .main-nav {
+        display: none; /* إخفاء القائمة في الشاشات الصغيرة لتجنب التداخل */
+      }
+    }
+
+    .brand2 {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* المسافة بين علامة القلب والاسم */
+      flex-shrink: 0;
+      text-decoration: none;
+      margin-left: -10px; /* التزحيح للشمال عشان يوسع المساحة للمنيو */
+    }
+
+    /* تصغير الـ Box بتاع الأيقونة حاجة بسيطة */
+    .brand-mark2 {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--grad-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--sh-sm);
+    }
+
+    .brand-mark2 svg {
+      width: 18px;
+      height: 18px;
+      stroke: #fff;
+    }
+    .site-header{
+      margin-left: -15px;
+      width: 100%;
+    }
+    .dash-body{
+      margin-top: -60px;
+    }
+    .topbar-right{
+      margin-top: 30px;
+      margin-right: 20px;
+    }
+    .dash-view{
+      display: none;
+    }
+    
+
+
+  </style>
 </head>
 <body data-page="patient" class="no-chatbot">
 
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="main-nav">
+        <ul>
+          <li><a class="nav-item" href="doctors.html"><span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><circle cx="18" cy="16" r="3"/><path d="M10 9v3a6 6 0 0 0 6 6"/></svg></span>Doctors</a></li>
+          <li><a class="nav-item" href="hospitals.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M12 7v4M10 9h4"/></svg></span>Hospitals</a></li>
+          <li><a class="nav-item" href="blood-banks.html"><span class="chip c-red"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 7.2 6 11.5A6 6 0 0 1 6 13.5C6 9.2 12 2 12 2z"/></svg></span>Blood Banks</a></li>
+          <li><a class="nav-item" href="ai-analysis.html"><span class="chip c-accent"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>AI Analysis</a></li>
+          <li><a class="nav-item" href="health-tips.html"><span class="chip c-amber"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.6 1 .6 1.6v.1h6v-.1c0-.6.1-1.2.6-1.6A6 6 0 0 0 12 3z"/></svg></span>Health Tips</a></li>
+          <li><a class="nav-item" href="pharmacy.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/><path d="M12 12v3M10.5 13.5h3"/></svg></span>Pharmacy</a></li>
+          <li><a class="nav-item" href="contact.html"><span class="chip c-cyan"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12a10 10 0 1 1-4-8"/><path d="M22 5l-8 6-4-3"/></svg></span>Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+
   <div class="dash">
 
-    <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
       <a href="../index.html" class="logo">
         <span class="mark" id="logoIcon"></span> Medi<span>Care</span>
       </a>
-      <div class="topbar-right">
+      <div class="side-label">Main</div>
+      <div class="side-link active" data-view="overview"><span id="i-overview"></span> Overview</div>
+      <a href="doctors.html" target="_blank" class="side-link"><span id="i-doctors"></span> Find Doctors</a>
+      <div class="side-link" data-view="appointments"><span id="i-appointments"></span> Appointments <span class="tag">3</span></div>
+
+      <div class="side-label">Explore</div>
+      <a href="hospitals.html" target="_blank" class="side-link"><span id="i-hospitals"></span> Hospitals</a>
+      <a href="blood-banks.html" target="_blank" class="side-link"><span id="i-blood"></span> Blood Banks</a>
+      <a href="health-tips.html" target="_blank" class="side-link"><span id="i-library"></span> Health Library</a>
+      <a href="ai-analysis.html" target="_blank" class="side-link"><span id="i-ai"></span> AI Analysis</a>
+      
+      <a href="fbook.html" target="_blank" class="side-link"><span id="i-fbook"></span> Fast Booking</a>
+      <a href="add.html" target="_blank" class="side-link"><span id="i-add"></span> Health Tracking</a>
+      <a href="sos.html" target="_blank" class="side-link" style="color: var(--danger); font-weight: 600;"><span id="i-sos"></span> SOS</a>
+
+      <div class="side-label">Account</div>
+      <div class="side-link" data-view="profile"><span id="i-profile"></span> My Profile</div>
+      <a href="login.html" class="side-link"><span id="i-logout"></span> Log Out</a>
+    </aside>
+    <div class="sidebar-backdrop" id="backdrop"></div>
+
+    <div class="dash-main">
+
+      
+        
+        <div style="flex-grow: 1;"></div> <div class="topbar-right">
           <button class="icon-btn"><span id="bellIcon"></span><span class="dot"></span></button>
           <div class="profile-chip" id="profileChip">
             <div class="avatar av-cyan" id="userAv">PA</div>
@@ -33,58 +225,15 @@
             </div>
           </div>
         </div>
-      <div class="side-label">Main</div>
-      <div class="side-link active" data-view="overview"><span id="i-overview"></span> Overview</div>
-      <div class="side-link" data-view="doctors"><span id="i-doctors"></span> Find Doctors</div>
-      <div class="side-link" data-view="appointments"><span id="i-appointments"></span> My Appointments <span class="tag">3</span></div>
-
-      <div class="side-label">Explore</div>
-      <div class="side-link" data-view="hospitals"><span id="i-hospitals"></span> Hospitals</div>
-      <div class="side-link" data-view="blood"><span id="i-blood"></span> Blood Banks</div>
-      <div class="side-link" data-view="library"><span id="i-library"></span> Health Library</div>
-      <div class="side-link" data-view="ai"><span id="i-ai"></span> AI Analysis</div>
-
-      <div class="side-label">Account</div>
-      <div class="side-link" data-view="profile"><span id="i-profile"></span> My Profile</div>
-      <a href="login.html" class="side-link"><span id="i-logout"></span> Log Out</a>
-    </aside>
-    <div class="sidebar-backdrop" id="backdrop"></div>
-
-    <!-- ===== MAIN ===== -->
-    <div class="dash-main">
-
-      <!-- Topbar -->
-      <header class="dash-topbar">
-        <button class="icon-btn dash-menu-btn" id="menuBtn" style="display:none"><span id="menuIcon"></span></button>
-         <nav class="main-nav">
-      <ul>
-        <li><a class="nav-item" href="home.html"><span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Home</a></li>
-        <li><a class="nav-item" href="doctors.html"><span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><circle cx="18" cy="16" r="3"/><path d="M10 9v3a6 6 0 0 0 6 6"/></svg></span>Doctors</a></li>
-        <li><a class="nav-item" href="hospitals.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M12 7v4M10 9h4"/></svg></span>Hospitals</a></li>
-        <li><a class="nav-item" href="blood-banks.html"><span class="chip c-red"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 7.2 6 11.5A6 6 0 0 1 6 13.5C6 9.2 12 2 12 2z"/></svg></span>Blood Banks</a></li>
-        <li><a class="nav-item" href="ai-analysis.html"><span class="chip c-accent"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>AI Analysis</a></li>
-        <li><a class="nav-item" href="health-tips.html"><span class="chip c-amber"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.6 1 .6 1.6v.1h6v-.1c0-.6.1-1.2.6-1.6A6 6 0 0 0 12 3z"/></svg></span>Health Tips</a></li>
-        <li><a class="nav-item" href="pharmacy.html"><span class="chip c-green"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/><path d="M12 12v3M10.5 13.5h3"/></svg></span>Pharmacy</a></li>
-        <li><a class="nav-item" href="contact.html"><span class="chip c-cyan"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12a10 10 0 1 1-4-8"/><path d="M22 5l-8 6-4-3"/></svg></span>Contact</a></li>
-        <li><a class="nav-item" href="contact.html"><span class="chip c-cyan"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12a10 10 0 1 1-4-8"/><path d="M22 5l-8 6-4-3"/></svg></span>Contact</a></li>
-      </ul>
-    </nav>
-        <div class="topbar-search">
-          <span id="searchIcon"></span>
-          <input type="text" placeholder="Search doctors, articles..." id="globalSearch" style="width: 150px;" />
-        </div>
-        
       </header>
 
       <div class="dash-body">
-
-        <!-- ===== VIEW: OVERVIEW ===== -->
         <section class="dash-view active" id="view-overview">
           <div class="view-title">
             <h1>Welcome back, <span id="welcomeName">Patient</span> 👋</h1>
             <p>Here's a summary of your health activity and upcoming care.</p>
           </div>
-
+          
           <div class="stat-cards">
             <div class="stat-card">
               <div class="sc-top"><div class="sc-ic" style="background:var(--primary-soft);color:var(--primary)" id="s1"></div></div>
@@ -105,59 +254,31 @@
           </div>
 
           <div class="split" style="gap:24px;align-items:start">
-            <!-- Upcoming appointments -->
             <div class="panel">
-              <div class="panel-head"><h3>Upcoming Appointments</h3>
-                <a href="#" class="btn btn-line btn-sm" data-goto="appointments">View all</a></div>
+              <div class="panel-head"><h3>Upcoming Appointments</h3><a href="#" class="btn btn-line btn-sm" data-goto="appointments">View all</a></div>
               <div class="panel-body" id="ovAppts"></div>
             </div>
-            <!-- AI health suggestions -->
             <div class="panel">
               <div class="panel-head"><h3>AI Health Suggestions</h3></div>
-              <div class="panel-body">
-                <ul class="tip-list" id="ovSuggestions"></ul>
-              </div>
+              <div class="panel-body"><ul class="tip-list" id="ovSuggestions"></ul></div>
             </div>
           </div>
 
-          <!-- Reminders -->
           <div class="panel">
             <div class="panel-head"><h3>Appointment Reminders</h3></div>
             <div class="panel-body" id="ovReminders"></div>
           </div>
 
-          <!-- Map -->
           <div class="panel">
-            <div class="panel-head"><h3>Care Near You</h3>
-              <a href="#" class="btn btn-line btn-sm" data-goto="hospitals">Open map</a></div>
-            <div class="panel-body">
-              <div class="map-placeholder" style="height:220px">
-                <div class="pin"></div>
-                <span class="lbl">12 facilities within 5 km</span>
-              </div>
-            </div>
+            <div class="panel-head"><h3>Care Near You</h3><a href="#" class="btn btn-line btn-sm" data-goto="hospitals">Open map</a></div>
+            <div class="panel-body"><div class="map-placeholder" style="height:220px"><div class="pin"></div><span class="lbl">12 facilities within 5 km</span></div></div>
           </div>
         </section>
 
-        <!-- ===== VIEW: DOCTORS ===== -->
-        <section class="dash-view" id="view-doctors">
-          <div class="view-title"><h1>Find a Doctor</h1><p>Search verified specialists by name, specialty and country.</p></div>
-          <div class="filter-bar">
-            <div class="search-field"><span id="docSearchIc"></span>
-              <input type="text" id="docSearch" placeholder="Search by doctor name..." /></div>
-            <select id="specFilter"><option value="">All Specialties</option></select>
-            <select id="countryFilter"><option value="">All Countries</option></select>
-          </div>
-          <p id="docCount" style="color:var(--muted);font-weight:600;margin-bottom:18px"></p>
-          <div class="grid g-3" id="docGrid"></div>
-        </section>
-
-        <!-- ===== VIEW: APPOINTMENTS ===== -->
         <section class="dash-view" id="view-appointments">
-          <div class="view-title"><h1>My Appointments</h1><p>Track upcoming visits and appointment reminders.</p></div>
+          <div class="view-title"><h1>Appointments</h1><p>Track upcoming visits and appointment reminders.</p></div>
           <div class="panel">
-            <div class="panel-head"><h3>Scheduled Visits</h3>
-              <a href="#" class="btn btn-primary btn-sm" data-goto="doctors">Book New</a></div>
+            <div class="panel-head"><h3>Scheduled Visits</h3><a href="#" class="btn btn-primary btn-sm" data-goto="doctors">Book New</a></div>
             <div class="panel-body" id="apptList"></div>
           </div>
           <div class="panel">
@@ -166,208 +287,109 @@
           </div>
         </section>
 
-        <!-- ===== VIEW: HOSPITALS ===== -->
-        <section class="dash-view" id="view-hospitals">
-          <div class="view-title"><h1>Hospitals</h1><p>Browse accredited hospitals and clinics with live availability.</p></div>
-          <div class="grid g-3" id="hospGrid"></div>
-          <div class="panel" style="margin-top:8px">
-            <div class="panel-head"><h3>Map View</h3></div>
-            <div class="panel-body">
-              <div class="map-placeholder" style="height:240px"><div class="pin"></div>
-                <span class="lbl">Hospitals near your location</span></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== VIEW: BLOOD BANKS ===== -->
-        <section class="dash-view" id="view-blood">
-          <div class="view-title"><h1>Blood Banks</h1><p>Check live blood stock and emergency donor contacts.</p></div>
-          <div class="grid g-3" id="bloodGrid"></div>
-        </section>
-
-        <!-- ===== VIEW: HEALTH LIBRARY ===== -->
-        <section class="dash-view" id="view-library">
-          <div class="view-title"><h1>Health Library</h1><p>Common diseases, symptoms, treatments and herbal remedies.</p></div>
-          <div class="panel">
-            <div class="panel-head"><h3>Common Diseases &amp; Treatment</h3></div>
-            <div class="panel-body"><div class="disease-acc" id="diseaseAcc"></div></div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><h3>Herbal Remedy Suggestions</h3></div>
-            <div class="panel-body"><div class="grid g-3" id="herbalGrid"></div></div>
-          </div>
-        </section>
-
-        <!-- ===== VIEW: AI ANALYSIS ===== -->
-        <section class="dash-view" id="view-ai">
-          <div class="view-title"><h1>AI Medical Analysis</h1><p>Upload a medical report for an instant AI-generated summary.</p></div>
-          <div class="panel">
-            <div class="panel-body" style="text-align:center;padding:48px 24px">
-              <div class="dz-ic" style="width:72px;height:72px;border-radius:20px;background:var(--grad-brand);color:#fff;display:grid;place-items:center;margin:0 auto 18px;box-shadow:var(--sh-glow)" id="aiIcon"></div>
-              <h3 style="font-size:1.3rem;margin-bottom:8px">Analyze Your Medical Reports</h3>
-              <p style="color:var(--muted);max-width:440px;margin:0 auto 22px">Our AI engine reads lab results and reports, then explains them in plain language with suggestions and herbal tips.</p>
-              <a href="ai-analysis.html" class="btn btn-primary btn-lg">Open AI Analysis Tool</a>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><h3>Recent AI Suggestions</h3></div>
-            <div class="panel-body"><ul class="tip-list" id="aiSuggestions"></ul></div>
-          </div>
-        </section>
-
-        <!-- ===== VIEW: PROFILE ===== -->
         <section class="dash-view" id="view-profile">
           <div class="view-title"><h1>My Profile</h1><p>Manage your personal and account information.</p></div>
           <div class="panel" style="max-width:620px">
             <div class="panel-body">
               <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
                 <div class="avatar av-cyan" id="profileAv" style="width:72px;height:72px;border-radius:20px;font-size:1.5rem">PA</div>
-                <div>
-                  <h3 id="profileName" style="font-size:1.2rem">Patient</h3>
-                  <p style="color:var(--muted);font-size:.9rem">Patient Account · Member since 2025</p>
-                </div>
+                <div><h3 id="profileName" style="font-size:1.2rem">Patient</h3><p style="color:var(--muted);font-size:.9rem">Patient Account · Member since 2025</p></div>
               </div>
               <div class="composer-grid">
                 <div class="field"><label>Full Name</label><input type="text" id="pfName" /></div>
                 <div class="field"><label>Email Address</label><input type="email" id="pfEmail" value="patient@mail.com" /></div>
                 <div class="field"><label>Phone Number</label><input type="text" id="pfPhone" placeholder="+20 ..." /></div>
-                <div class="field"><label>Country</label>
-                  <select id="pfCountry"></select></div>
+                <div class="field"><label>Country</label><select id="pfCountry"></select></div>
               </div>
               <button class="btn btn-primary" style="margin-top:18px" id="saveProfile">Save Changes</button>
             </div>
           </div>
         </section>
-
       </div>
     </div>
   </div>
 
-  <!-- ===== BOOKING MODAL ===== -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
-      <div class="modal-head">
-        <h3>Book Appointment</h3>
-        <button class="modal-close" data-close-modal>&times;</button>
-      </div>
+      <div class="modal-head"><h3>Book Appointment</h3><button class="modal-close" data-close-modal>&times;</button></div>
       <div class="modal-body" id="bookingBody"></div>
     </div>
   </div>
 
-  <script src=" js/data.js"></script>
-  <script src=" js/main.js"></script>
-  <script src=" js/booking.js"></script>
-  <script src=" js/dashboard.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/dashboard.js"></script>
   <script>
-    /* ----- Icons ----- */
-    document.getElementById('logoIcon').innerHTML = ICONS.heart;
-    document.getElementById('menuIcon').innerHTML = ICONS.menu;
-    document.getElementById('searchIcon').innerHTML = ICONS.search;
-    document.getElementById('bellIcon').innerHTML = ICONS.bell;
-    document.getElementById('docSearchIc').innerHTML = ICONS.search;
-    document.getElementById('aiIcon').innerHTML = ICONS.robot;
-    const sideIcons = { overview:'layout', doctors:'stethoscope', appointments:'calendar',
-      hospitals:'hospital', blood:'droplet', library:'doc', ai:'robot', profile:'user', logout:'logout' };
+    /* ----- Mobile Menu Toggle ----- */
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.querySelector('.main-nav');
+    if (menuToggle && mainNav) {
+      menuToggle.addEventListener('click', () => mainNav.classList.toggle('active'));
+    }
+
+    /* ----- Icons Setup ----- */
+    if (typeof ICONS !== 'undefined') {
+      if (!ICONS.sos) ICONS.sos = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+    }
+
+    if (document.getElementById('logoIcon')) document.getElementById('logoIcon').innerHTML = ICONS.heart;
+    if (document.getElementById('menuIcon')) document.getElementById('menuIcon').innerHTML = ICONS.menu;
+    if (document.getElementById('bellIcon')) document.getElementById('bellIcon').innerHTML = ICONS.bell;
+    
+    const sideIcons = { overview:'layout', doctors:'stethoscope', appointments:'calendar', hospitals:'hospital', blood:'droplet', library:'doc', ai:'robot', fbook:'calendar', add:'plus', sos:'sos', profile:'user', logout:'logout' };
     Object.entries(sideIcons).forEach(([k,v]) => {
       const el = document.getElementById('i-'+k); if (el) el.innerHTML = ICONS[v];
     });
-    document.getElementById('d1').innerHTML = ICONS.user;
-    document.getElementById('d2').innerHTML = ICONS.calendar;
-    document.getElementById('d3').innerHTML = ICONS.logout;
-    ['s1','s2','s3','s4'].forEach((id,i) =>
-      document.getElementById(id).innerHTML = [ICONS.calendar,ICONS.doc,ICONS.heart,ICONS.activity][i]);
+    
+    if (document.getElementById('d1')) document.getElementById('d1').innerHTML = ICONS.user;
+    if (document.getElementById('d2')) document.getElementById('d2').innerHTML = ICONS.calendar;
+    if (document.getElementById('d3')) document.getElementById('d3').innerHTML = ICONS.logout;
+    
+    ['s1','s2','s3','s4'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = [ICONS.calendar,ICONS.doc,ICONS.heart,ICONS.activity][i];
+    });
 
-    /* ----- Session / user ----- */
     const user = Session.get() || { name: 'Sarah Patient', role: 'patient' };
     const uName = user.name || 'Sarah Patient';
-    ['userName','welcomeName','profileName'].forEach(id => document.getElementById(id).textContent = uName);
-    document.getElementById('pfName').value = uName;
-    ['userAv','profileAv'].forEach(id => document.getElementById(id).textContent = initials(uName));
-
-    /* ----- Sidebar / view switching ----- */
-    initDashNav('Overview', {
-      overview:'Overview', doctors:'Find Doctors', appointments:'My Appointments',
-      hospitals:'Hospitals', blood:'Blood Banks', library:'Health Library',
-      ai:'AI Analysis', profile:'My Profile'
+    ['userName','welcomeName','profileName'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = uName;
+    });
+    if (document.getElementById('pfName')) document.getElementById('pfName').value = uName;
+    ['userAv','profileAv'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = initials(uName);
     });
 
-    /* ----- Populate selects ----- */
-    const specF = document.getElementById('specFilter');
-    const countryF = document.getElementById('countryFilter');
+    initDashNav('Overview', { overview:'Overview', appointments:'Appointments', profile:'My Profile' });
+
     const pfCountry = document.getElementById('pfCountry');
-    DB.specialties.forEach(s => specF.innerHTML += `<option>${s}</option>`);
-    DB.countries.forEach(c => { countryF.innerHTML += `<option>${c}</option>`;
-      pfCountry.innerHTML += `<option>${c}</option>`; });
+    if (pfCountry) DB.countries.forEach(c => pfCountry.innerHTML += `<option>${c}</option>`);
 
-    /* ----- Doctors view ----- */
-    function renderDoctors() {
-      const q = document.getElementById('docSearch').value.toLowerCase();
-      const spec = specF.value, country = countryF.value;
-      const list = DB.doctors.filter(d => d.name.toLowerCase().includes(q) &&
-        (!spec || d.specialty === spec) && (!country || d.country === country));
-      document.getElementById('docCount').textContent =
-        `${list.length} doctor${list.length !== 1 ? 's' : ''} found`;
-      const grid = document.getElementById('docGrid');
-      grid.innerHTML = list.length ? list.map(doctorCardHTML).join('')
-        : `<div class="empty-state" style="grid-column:1/-1">${ICONS.search}<h3>No doctors found</h3></div>`;
-    }
-    ['docSearch','specFilter','countryFilter'].forEach(id =>
-      document.getElementById(id).addEventListener('input', renderDoctors));
-    renderDoctors();
-
-    /* Global search jumps to doctors view */
-    document.getElementById('globalSearch').addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        document.getElementById('docSearch').value = e.target.value;
-        goView('doctors'); renderDoctors();
-      }
-    });
-
-    /* ----- Appointments ----- */
     function apptRowHTML(a) {
-      return `<div class="appt-row">
-        <div class="appt-date"><strong>${a.day}</strong><span>${a.mon}</span></div>
-        <div class="appt-info"><h4>${a.doctor}</h4><p>${a.specialty} · ${a.time}</p></div>
-        <span class="badge ${a.status === 'Confirmed' ? 'badge-green' : 'badge-amber'}">${a.status}</span>
-      </div>`;
+      return `<div class="appt-row"><div class="appt-date"><strong>${a.day}</strong><span>${a.mon}</span></div><div class="appt-info"><h4>${a.doctor}</h4><p>${a.specialty} · ${a.time}</p></div><span class="badge ${a.status === 'Confirmed' ? 'badge-green' : 'badge-amber'}">${a.status}</span></div>`;
     }
-    document.getElementById('ovAppts').innerHTML = DB.appointments.map(apptRowHTML).join('');
-    document.getElementById('apptList').innerHTML = DB.appointments.map(apptRowHTML).join('');
+    if (document.getElementById('ovAppts')) document.getElementById('ovAppts').innerHTML = DB.appointments.map(apptRowHTML).join('');
+    if (document.getElementById('apptList')) document.getElementById('apptList').innerHTML = DB.appointments.map(apptRowHTML).join('');
 
     const reminderHTML = DB.appointments.map(a => `
       <div class="appt-row">
-        <div class="appt-date" style="background:var(--cyan-soft)">
-          <strong style="color:#0a8c98;font-size:1.2rem">${a.day}</strong>
-          <span style="color:#0a8c98;font-size:.72rem;font-weight:700;text-transform:uppercase">${a.mon}</span>
-        </div>
-        <div class="appt-info"><h4>Reminder: ${a.doctor}</h4>
-          <p>Your ${a.specialty} appointment is on ${a.mon} ${a.day} at ${a.time}.</p></div>
+        <div class="appt-date" style="background:var(--cyan-soft)"><strong style="color:#0a8c98;font-size:1.2rem">${a.day}</strong><span style="color:#0a8c98;font-size:.72rem;font-weight:700;text-transform:uppercase">${a.mon}</span></div>
+        <div class="appt-info"><h4>Reminder: ${a.doctor}</h4><p>Your ${a.specialty} appointment is on ${a.mon} ${a.day} at ${a.time}.</p></div>
         <span class="badge badge-cyan">Reminder</span>
       </div>`).join('');
-    document.getElementById('ovReminders').innerHTML = reminderHTML;
-    document.getElementById('apptReminders').innerHTML = reminderHTML;
+      
+    if (document.getElementById('ovReminders')) document.getElementById('ovReminders').innerHTML = reminderHTML;
+    if (document.getElementById('apptReminders')) document.getElementById('apptReminders').innerHTML = reminderHTML;
 
-    /* ----- AI suggestions ----- */
-    const sugHTML = DB.aiResult.recommendations.concat(DB.aiResult.suggestions)
-      .slice(0,5).map(t => `<li><span class="ti">${ICONS.check}</span><span>${t}</span></li>`).join('');
-    document.getElementById('ovSuggestions').innerHTML = sugHTML;
-    document.getElementById('aiSuggestions').innerHTML = sugHTML;
+    const sugHTML = DB.aiResult.recommendations.concat(DB.aiResult.suggestions).slice(0,5).map(t => `<li><span class="ti">${ICONS.check}</span><span>${t}</span></li>`).join('');
+    if (document.getElementById('ovSuggestions')) document.getElementById('ovSuggestions').innerHTML = sugHTML;
 
-    /* ----- Hospitals ----- */
-    document.getElementById('hospGrid').innerHTML = DB.hospitals.map(hospitalCardHTML).join('');
-
-    /* ----- Blood banks ----- */
-    document.getElementById('bloodGrid').innerHTML = DB.bloodBanks.map(bloodCardHTML).join('');
-
-    /* ----- Health library ----- */
-    document.getElementById('diseaseAcc').innerHTML = DB.diseases.map(diseaseItemHTML).join('');
-    document.getElementById('herbalGrid').innerHTML = DB.herbal.map(herbalCardHTML).join('');
-    /* main.js initFAQ (on DOMContentLoaded) binds the disease accordion. */
-
-    /* ----- Profile save ----- */
-    document.getElementById('saveProfile').addEventListener('click', () => {
-      toast('Profile updated successfully.', 'success');
-    });
+    if (document.getElementById('saveProfile')) {
+      document.getElementById('saveProfile').addEventListener('click', () => toast('Profile updated successfully.', 'success'));
+    }
   </script>
 </body>
 </html>

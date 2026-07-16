@@ -140,69 +140,7 @@ function initModals() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 }
 
-/* ----------  CHATBOT FAB  ---------- */
-const CHAT_REPLIES = [
-  "I can help you find a doctor, hospital, or blood bank. What do you need?",
-  "For symptom questions, our AI Analysis page gives educational insights — but always confirm with a doctor.",
-  "To book an appointment, open the Doctors page and pick a specialist that fits your needs.",
-  "In an emergency, please call your local emergency number immediately. I can also show nearby hospitals.",
-  "Great question! You can read more in our Health Tips section, written by verified doctors."
-];
-function initChatbot() {
-  const fab = $('#chatFab');
-  const win = $('#chatWindow');
-  if (!fab || !win) return;
-  fab.addEventListener('click', () => win.classList.toggle('show'));
-  const close = $('#chatClose', win);
-  if (close) close.addEventListener('click', () => win.classList.remove('show'));
-  const input = $('#chatInput', win);
-  const body = $('#chatBody', win);
-  const sendBtn = $('#chatSend', win);
-  let turn = 0;
-  function send() {
-    const text = input.value.trim();
-    if (!text) return;
-    const u = document.createElement('div');
-    u.className = 'chat-msg user'; u.textContent = text;
-    body.appendChild(u);
-    input.value = '';
-    body.scrollTop = body.scrollHeight;
-    setTimeout(() => {
-      const b = document.createElement('div');
-      b.className = 'chat-msg bot';
-      b.textContent = CHAT_REPLIES[turn % CHAT_REPLIES.length];
-      body.appendChild(b);
-      body.scrollTop = body.scrollHeight;
-      turn++;
-    }, 650);
-  }
-  if (sendBtn) sendBtn.addEventListener('click', send);
-  if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
-}
 
-/* ----------  CHATBOT MARKUP INJECTION  ---------- */
-function mountChatbot() {
-  if ($('#chatFab')) return;
-  const wrap = document.createElement('div');
-  wrap.innerHTML = `
-    <div class="chat-window" id="chatWindow">
-      <div class="chat-head">
-        <div class="ch-av">${ICONS.robot}</div>
-        <div><h4>MediCare Assistant</h4><span>Online now</span></div>
-        <button id="chatClose" style="margin-left:auto;background:none;color:#fff;font-size:1.3rem">&times;</button>
-      </div>
-      <div class="chat-body" id="chatBody">
-        <div class="chat-msg bot">Hi! 👋 I'm your MediCare assistant. How can I help you stay healthy today?</div>
-      </div>
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Type a message..." />
-        <button id="chatSend">${ICONS.send}</button>
-      </div>
-    </div>
-    <button class="fab" id="chatFab" aria-label="Open chat assistant">${ICONS.robot}</button>`;
-  document.body.appendChild(wrap);
-  initChatbot();
-}
 
 /* ----------  AUTH SESSION (localStorage-free, in-memory + sessionStorage)  ---------- */
 const Session = {

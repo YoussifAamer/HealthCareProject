@@ -1,119 +1,120 @@
-// تتبع الإحداثيات الحية بدقة
+// قائمة مستشفيات الشروق الخمسة الرئيسية مع إحداثياتها التقريبية
+const emergencyFacilities = [
+    { name: "مستشفى الشروق", lat: 30.1221, lng: 31.6214, city: "El Shorouk" },
+    { name: "مستشفى رويال الشروق", lat: 30.1189, lng: 31.6098, city: "El Shorouk" },
+    { name: "مستشفى الشروق المركزي", lat: 30.1415, lng: 31.6322, city: "El Shorouk" },
+    { name: "مستشفى شفا فرع الشروق", lat: 30.1152, lng: 31.6150, city: "El Shorouk" },
+    { name: "مستشفى نور الشروق", lat: 30.1284, lng: 31.6255, city: "El Shorouk" }
+];
+
+// متغيرات عالمية لحفظ موقع المستخدم والمستشفى الحالي لتمريرها لخرائط جوجل
 let currentUserLocation = { lat: null, lng: null };
+let selectedHospitalLocation = { lat: null, lng: null };
 
 function triggerEmergency() {
-    // التأكد من وجود حاوية التوست عشان الكود ما يضربش
-    const container = document.getElementById("toast-container");
-    if (container) {
-        showToast("🚨 Connecting to Live GPS Satellites...");
-    }
-    
     if (navigator.geolocation) {
-        const geoOptions = {
-            enableHighAccuracy: true, // دقة عالية جداً لـ GPS الموبايل واللابتوب
-            timeout: 5000,            // 5 ثواني كحد أقصى للقط الإشارة
-            maximumAge: 0
-        };
-
+        showToast("Broadcasting SOS... Pinpointing Location...");
+        
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 currentUserLocation.lat = position.coords.latitude;
                 currentUserLocation.lng = position.coords.longitude;
                 
-                // تشغيل شاشة الطوارئ الحية فوراً
-                activateEmergencyUI();
+                // البحث عن أقرب مستشفى بناءً على الإحداثيات الحقيقية للمستخدم
+                const nearestFacility = findNearestHospital(currentUserLocation.lat, currentUserLocation.lng);
+                
+                // حفظ إحداثيات المستشفى المختار للخرائط
+                selectedHospitalLocation.lat = nearestFacility.lat;
+                selectedHospitalLocation.lng = nearestFacility.lng;
+                
+                // تفعيل لوحة الطوارئ وعرض زر الخريطة والتوجيهات
+                updateEmergencyPanel(nearestFacility, true);
             },
             (error) => {
-                // خطة بديلة لو الـ GPS مقفول في المتصفح
-                currentUserLocation.lat = 30.5612;
-                currentUserLocation.lng = 31.0118;
-                activateEmergencyUI();
-            },
-            geoOptions
+                showToast("GPS Access Denied. Using Default Network Centers.");
+                const defaultFacility = emergencyFacilities[0]; // مستشفى الشروق كافتراضي عند رفض الإذن
+                
+                selectedHospitalLocation.lat = defaultFacility.lat;
+                selectedHospitalLocation.lng = defaultFacility.lng;
+                
+                updateEmergencyPanel(defaultFacility, false);
+            }
         );
     } else {
-        alert("Error: Geolocation is not supported by this browser.");
+        showToast("Geolocation is not supported by this browser.");
     }
 }
 
-// عرض واجهة المستخدم وتحديث البيانات بناءً على الـ HTML بتاعك
-function activateEmergencyUI() {
+// دالة لحساب أقرب مستشفى باستخدام صيغة المسافة البسيطة
+function findNearestHospital(userLat, userLng) {
+    let nearest = emergencyFacilities[0];
+    let minDistance = Infinity;
+
+    emergencyFacilities.forEach(facility => {
+        const dLat = userLat - facility.lat;
+        const dLng = userLng - facility.lng;
+        const distance = Math.sqrt(dLat * dLat + dLng * dLng);
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearest = facility;
+        }
+    });
+    
+    // تحويل المسافة التقريبية لكيلومترات (درجة خط العرض تساوي تقريباً 111 كم)
+    nearest.calculatedDistance = minDistance === Infinity ? 1.5 : (minDistance * 111).toFixed(1);
+    return nearest;
+}
+
+// دالة لتحديث واجهة المستخدم وإظهار زر الخرائط
+function updateEmergencyPanel(facility, isLiveGPS) {
     const panel = document.getElementById("emergency-panel");
-    if (panel) {
-        panel.classList.add("active");
-        panel.style.display = "block"; // تأكيد الظهور لو الـ CSS خافيه
-    }
+    panel.classList.add("active");
 
-    // تحديث النصوص في الـ HTML
-    const hospName = document.getElementById("hosp-name");
-    const hospDist = document.getElementById("hosp-dist");
-    const hospEta = document.getElementById("hosp-eta");
+    // تحديث نصوص كارت التفاصيل
+    document.getElementById("hosp-name").textContent = facility.name;
+    document.getElementById("hosp-dist").textContent = `${facility.calculatedDistance || '1.2'} km away ${isLiveGPS ? '(Verified via Live GPS 📍)' : ''}`;
+    
+    const estimatedETA = Math.max(3, Math.round(facility.calculatedDistance * 2.2 || 3));
+    document.getElementById("hosp-eta").textContent = `${estimatedETA} Minutes`;
 
-    if (hospName) hospName.textContent = "Nearest General Emergency Trauma Hospital";
-    if (hospDist) hospDist.textContent = "Live Radar Syncing... 📍";
-    if (hospEta) hospEta.textContent = "Calculating Live Traffic";
-
-    // تحديث خطوات الحالة (Status Steps)
+    // تحديث كارت الحالة لتأكيد الإرسال والطلب
     const step3 = document.getElementById("step-3");
-    if (step3) {
-        step3.innerHTML = "<span>✓</span> Ambulance Dispatched & Route Locked";
-        step3.style.color = "#10b981"; // لون أخضر صريح متوافق مع أي ثيم بدل الـ Variable
+    if(step3) {
+        step3.innerHTML = "<span>✓</span> Ambulance Dispatched (ID: #AMB-SHK)";
+        step3.style.color = "var(--green)";
     }
 
-    // إظهار زرار جوجل مابس الحقيقي
+    // إظهار زر خرائط جوجل مباشرة للبدء في الملاحة والتوجيه
     const mapsBtn = document.getElementById("maps-route-btn");
-    if (mapsBtn) { 
-        mapsBtn.style.display = "block"; 
+    if (mapsBtn) {
+        mapsBtn.style.display = "flex"; 
     }
     
-    showToast("⚡ Emergency Route Locked! Click below to navigate.");
+    showToast(`Help route locked to ${facility.name}!`);
 }
 
-// 🎯 الدالة الخارقة: توجيه مباشر بالخط الأزرق لأقرب مستشفى حقيقية
+// الدالة المسؤولة عن فتح خرائط جوجل وعمل التوجيهات
 function openGoogleMaps() {
+    let mapsUrl = "";
+    
+    // إذا تم الحصول على موقع المستخدم بنجاح، يتم رسم اتجاه القيادة من موقعه الحالي إلى إحداثيات المستشفى
     if (currentUserLocation.lat && currentUserLocation.lng) {
-        // البحث باللفظين (مستشفى أو hospital) مع نقطة انطلاقك الحالية
-        // ده بيجبر جوجل مابس يفتح الخط الأزرق فوراً لأقرب منشأة طبية فعلية (زي الضرة)
-        const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentUserLocation.lat},${currentUserLocation.lng}&destination=مستشفى+OR+hospital&travelmode=driving`;
-        window.open(mapsUrl, '_blank');
+        mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentUserLocation.lat},${currentUserLocation.lng}&destination=${selectedHospitalLocation.lat},${selectedHospitalLocation.lng}&travelmode=driving`;
     } else {
-        window.open("https://www.google.com/maps/dir/?api=1&destination=مستشفى+OR+hospital&travelmode=driving", '_blank');
+        // إذا كان الـ GPS معطلاً، يتم توجيه المستخدم إلى موقع المستشفى مباشرة على الخريطة
+        mapsUrl = `https://www.google.com/maps/search/?api=1&query=${selectedHospitalLocation.lat},${selectedHospitalLocation.lng}`;
     }
+    
+    // فتح الرابط في نافذة جديدة
+    window.open(mapsUrl, '_blank');
 }
 
-// دالة التوست المضمونة
 function showToast(message) {
     const container = document.getElementById("toast-container");
-    if (!container) return;
-    
     const toast = document.createElement("div");
-    // إعطاء ستايل مباشر عشان لو الـ CSS فيه مشكلة التوست يظهر برضه بشكل شيك
-    toast.style.background = "#ef4444";
-    toast.style.color = "white";
-    toast.style.padding = "12px 24px";
-    toast.style.borderRadius = "8px";
-    toast.style.marginBottom = "10px";
-    toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-    toast.style.fontWeight = "600";
-    toast.style.display = "flex";
-    toast.style.alignItems = "center";
-    toast.style.gap = "10px";
-    
+    toast.className = "toast";
     toast.innerHTML = `<span>🚨</span> <span>${message}</span>`;
     container.appendChild(toast);
-    
-    setTimeout(() => { 
-        toast.remove(); 
-    }, 4000);
+    setTimeout(() => { toast.remove(); }, 2500);
 }
-
-// كود إضافي لتشغيل قائمة الموبايل (Menu Toggle) عشان البروجكت يبقى كامل لو التحكيم صغر الشاشة
-document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = document.getElementById("menuToggle");
-    const mainNav = document.querySelector(".main-nav");
-    if (menuToggle && mainNav) {
-        menuToggle.addEventListener("click", () => {
-            mainNav.classList.toggle("active");
-        });
-    }
-});
