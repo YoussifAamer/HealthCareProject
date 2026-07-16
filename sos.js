@@ -1,9 +1,10 @@
-// قائمة ببعض مستشفيات الطوارئ الافتراضية لشبين الكوم والقاهرة كمثال للمحاكاة الذكية
+// قائمة مستشفيات الشروق الخمسة الرئيسية مع إحداثياتها التقريبية
 const emergencyFacilities = [
-    { name: "مستشفى شبين الكوم التعليمي (Emergency)", lat: 30.5612, lng: 31.0118, city: "Shibin El Kom" },
-    { name: "مستشفى شبين الكوم الجامعي", lat: 30.5550, lng: 31.0090, city: "Shibin El Kom" },
-    { name: "Cairo International Trauma Center", lat: 30.0444, lng: 31.2357, city: "Cairo" },
-    { name: "Ain Shams University Hospital", lat: 30.0772, lng: 31.2849, city: "Cairo" }
+    { name: "مستشفى الشروق", lat: 30.1221, lng: 31.6214, city: "El Shorouk" },
+    { name: "مستشفى رويال الشروق", lat: 30.1189, lng: 31.6098, city: "El Shorouk" },
+    { name: "مستشفى الشروق المركزي", lat: 30.1415, lng: 31.6322, city: "El Shorouk" },
+    { name: "مستشفى شفا فرع الشروق", lat: 30.1152, lng: 31.6150, city: "El Shorouk" },
+    { name: "مستشفى نور الشروق", lat: 30.1284, lng: 31.6255, city: "El Shorouk" }
 ];
 
 // متغيرات عالمية لحفظ موقع المستخدم والمستشفى الحالي لتمريرها لخرائط جوجل
@@ -19,19 +20,19 @@ function triggerEmergency() {
                 currentUserLocation.lat = position.coords.latitude;
                 currentUserLocation.lng = position.coords.longitude;
                 
-                // البحث عن أقرب مستشفى بناءً على الإحداثيات الحقيقية
+                // البحث عن أقرب مستشفى بناءً على الإحداثيات الحقيقية للمستخدم
                 const nearestFacility = findNearestHospital(currentUserLocation.lat, currentUserLocation.lng);
                 
                 // حفظ إحداثيات المستشفى المختار للخرائط
                 selectedHospitalLocation.lat = nearestFacility.lat;
                 selectedHospitalLocation.lng = nearestFacility.lng;
                 
-                // تفعيل لوحة الطوارئ وعرض الزر
+                // تفعيل لوحة الطوارئ وعرض زر الخريطة والتوجيهات
                 updateEmergencyPanel(nearestFacility, true);
             },
             (error) => {
                 showToast("GPS Access Denied. Using Default Network Centers.");
-                const defaultFacility = emergencyFacilities[0]; // مستشفى شبين الكوم كافتراضي
+                const defaultFacility = emergencyFacilities[0]; // مستشفى الشروق كافتراضي عند رفض الإذن
                 
                 selectedHospitalLocation.lat = defaultFacility.lat;
                 selectedHospitalLocation.lng = defaultFacility.lng;
@@ -44,7 +45,7 @@ function triggerEmergency() {
     }
 }
 
-// دالة لحساب المسافة التقريبية
+// دالة لحساب أقرب مستشفى باستخدام صيغة المسافة البسيطة
 function findNearestHospital(userLat, userLng) {
     let nearest = emergencyFacilities[0];
     let minDistance = Infinity;
@@ -60,7 +61,8 @@ function findNearestHospital(userLat, userLng) {
         }
     });
     
-    nearest.calculatedDistance = minDistance === Infinity ? 2.1 : (minDistance * 111).toFixed(1);
+    // تحويل المسافة التقريبية لكيلومترات (درجة خط العرض تساوي تقريباً 111 كم)
+    nearest.calculatedDistance = minDistance === Infinity ? 1.5 : (minDistance * 111).toFixed(1);
     return nearest;
 }
 
@@ -69,42 +71,42 @@ function updateEmergencyPanel(facility, isLiveGPS) {
     const panel = document.getElementById("emergency-panel");
     panel.classList.add("active");
 
-    // تحديث نصوص الكارت اليسار
+    // تحديث نصوص كارت التفاصيل
     document.getElementById("hosp-name").textContent = facility.name;
-    document.getElementById("hosp-dist").textContent = `${facility.calculatedDistance || '0.8'} km away ${isLiveGPS ? '(Verified via Live GPS 📍)' : ''}`;
+    document.getElementById("hosp-dist").textContent = `${facility.calculatedDistance || '1.2'} km away ${isLiveGPS ? '(Verified via Live GPS 📍)' : ''}`;
     
-    const estimatedETA = Math.max(4, Math.round(facility.calculatedDistance * 2.5 || 4));
+    const estimatedETA = Math.max(3, Math.round(facility.calculatedDistance * 2.2 || 3));
     document.getElementById("hosp-eta").textContent = `${estimatedETA} Minutes`;
 
-    // تحديث كارت الخطوات (اليمين) وتأكيد الإرسال
+    // تحديث كارت الحالة لتأكيد الإرسال والطلب
     const step3 = document.getElementById("step-3");
     if(step3) {
-        step3.innerHTML = "<span>✓</span> Ambulance Dispatched (ID: #AMB-SHB)";
+        step3.innerHTML = "<span>✓</span> Ambulance Dispatched (ID: #AMB-SHK)";
         step3.style.color = "var(--green)";
     }
 
-    // إظهار زر الخرائط فوراً
+    // إظهار زر خرائط جوجل مباشرة للبدء في الملاحة والتوجيه
     const mapsBtn = document.getElementById("maps-route-btn");
     if (mapsBtn) {
-        mapsBtn.style.display = "flex"; // تفعيله ليظهر كـ Flexbox متناسق
+        mapsBtn.style.display = "flex"; 
     }
     
-    showToast(`Help route locked to ${facility.name || 'Shibin Hospital'}!`);
+    showToast(`Help route locked to ${facility.name}!`);
 }
 
-// الدالة السحرية التي تفتح خرائط جوجل وتوجه المستخدم للمستشفى
+// الدالة المسؤولة عن فتح خرائط جوجل وعمل التوجيهات
 function openGoogleMaps() {
     let mapsUrl = "";
     
-    // لو الـ GPS اشتغل وجاب موقع المستخدم الحالي، نعمل رابط توجيه من نقطة لنقطة (Origin to Destination)
+    // إذا تم الحصول على موقع المستخدم بنجاح، يتم رسم اتجاه القيادة من موقعه الحالي إلى إحداثيات المستشفى
     if (currentUserLocation.lat && currentUserLocation.lng) {
         mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentUserLocation.lat},${currentUserLocation.lng}&destination=${selectedHospitalLocation.lat},${selectedHospitalLocation.lng}&travelmode=driving`;
     } else {
-        // لو الـ GPS مقفول، نفتح مكان المستشفى مباشرة على الخريطة كـ Destination
+        // إذا كان الـ GPS معطلاً، يتم توجيه المستخدم إلى موقع المستشفى مباشرة على الخريطة
         mapsUrl = `https://www.google.com/maps/search/?api=1&query=${selectedHospitalLocation.lat},${selectedHospitalLocation.lng}`;
     }
     
-    // فتح الرابط في تبويب جديد احترافي
+    // فتح الرابط في نافذة جديدة
     window.open(mapsUrl, '_blank');
 }
 
