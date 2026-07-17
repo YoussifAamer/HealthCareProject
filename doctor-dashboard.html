@@ -7,10 +7,163 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href=" css/style.css" />
+  <style>
+
+.dash1000{
+display: none;
+
+}
+body {
+      padding-top: 70px; /* مسافة للـ Header المثبت علوياً */
+    }
+
+    /* هيدر متناسق تماماً يبدأ بعد الـ Sidebar ولا يطفو فوقه */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 260px; /* يبدأ بعد الـ Sidebar مباشرة */
+      width: calc(100% - 260px); /* يملأ المساحة المتبقية فقط */
+      height: 70px;
+      background: #0f172a; /* نفس اللون الداكن للـ Sidebar */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      z-index: -1;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    /* لتوسيط محتويات الناف بار بالكامل */
+    .header-inner {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* توسيط القائمة في المساحة المتاحة */
+      margin-left: 20px;
+    }
+
+    /* الروابط بنفس الـ Items الأصلية وبألوان تتماشى مع الخلفية الداكنة */
+    .main-nav ul {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8; /* لون نص هادئ */
+      text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* أيقونات الـ Chips داخل الـ Nav Bar الجديد */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .chip svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ألوان الأيقونات المخصصة */
+    .c-primary { color: #3b82f6; }
+    .c-green { color: #10b981; }
+    .c-red { color: #ef4444; }
+    .c-accent { color: #8b5cf6; }
+    .c-amber { color: #f59e0b; }
+
+    /* لضبط توازن التصميم للـ dashboard */
+    .dash {
+      height: calc(100vh - 70px);
+    }
+
+    @media (max-width: 992px) {
+      .site-header {
+        left: 0; /* يعود لملء الشاشة بالكامل في الموبايل */
+        width: 100%;
+      }
+      .main-nav {
+        display: none; /* إخفاء القائمة في الشاشات الصغيرة لتجنب التداخل */
+      }
+    }
+
+    .brand2 {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* المسافة بين علامة القلب والاسم */
+      flex-shrink: 0;
+      text-decoration: none;
+      margin-left: -10px; /* التزحيح للشمال عشان يوسع المساحة للمنيو */
+    }
+
+    /* تصغير الـ Box بتاع الأيقونة حاجة بسيطة */
+    .brand-mark2 {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--grad-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--sh-sm);
+    }
+
+    .brand-mark2 svg {
+      width: 18px;
+      height: 18px;
+      stroke: #fff;
+    }
+    .site-header{
+      margin-left: -15px;
+      width: 100%;
+    }
+    .dash-body{
+      margin-top: -60px;
+    }
+    .topbar-right{
+      margin-top: 30px;
+      margin-right: 20px;
+    }
+    .two{
+      margin-top: -40px;
+    }
+    .doctor{
+      display: none;
+    }
+
+  </style>
 </head>
 <body data-page="doctor" class="no-chatbot">
-
+  
   <div class="dash">
+    
 
     <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
@@ -36,9 +189,9 @@
 
     <!-- ===== MAIN ===== -->
     <div class="dash-main">
-      <header class="dash-topbar">
+      <header class="dash-topbar dash1000">
         <button class="icon-btn dash-menu-btn" id="menuBtn" style="display:none"><span id="menuIcon"></span></button>
-        <h2 id="topTitle">Overview</h2>
+        <!-- <h2 id="topTitle">Overview</h2> -->
         <div class="topbar-search">
           <span id="searchIcon"></span>
           <input type="text" placeholder="Search patients, articles..." />
@@ -64,10 +217,10 @@
       <div class="dash-body">
 
         <!-- ===== VIEW: OVERVIEW ===== -->
-        <section class="dash-view active" id="view-overview">
+        <section class="dash-view active two" id="view-overview">
           <div class="view-title">
-            <h1>Welcome, <span id="welcomeName">Doctor</span> 👨‍⚕️</h1>
-            <p>Here's a snapshot of your practice activity this week.</p>
+            <h1 class="doctor">Welcome, <span id="welcomeName">Doctor</span> 👨‍⚕️</h1>
+            <!-- <p>Here's a snapshot of your practice activity this week.</p> -->
           </div>
 
           <div class="stat-cards">

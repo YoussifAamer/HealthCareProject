@@ -1,10 +1,3 @@
-/* =========================================================
-   MediCare AI Platform — Appointment Booking System
-   Renders the booking modal: doctor select, date picker,
-   time-slot grid, confirm step and success screen.
-   Used by doctors.html and the patient dashboard.
-   ========================================================= */
-
 /* Available time slots — a couple are marked "taken" for realism. */
 const TIME_SLOTS = [
   { t: '09:00 AM', taken: false }, { t: '10:30 AM', taken: false },

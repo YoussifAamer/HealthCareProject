@@ -8,15 +8,15 @@
 function mountChrome() {
   const page = document.body.dataset.page || '';
   const navLinks = [
-    { id: 'home', label: 'Home', href: 'index.html' },
-    { id: 'doctors', label: 'Doctors', href: 'doctors.html' },
+    { id: 'home', label: '<span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Home', href: 'index.html' },
+    { id: 'doctors', label: '<span class="chip c-primary"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><circle cx="18" cy="16" r="3"/><path d="M10 9v3a6 6 0 0 0 6 6"/></svg></span>Doctors', href: 'doctors.html' },
     { id: 'hospitals', label: 'Hospitals', href: 'hospitals.html' },
     { id: 'blood', label: 'Blood Banks', href: 'blood-banks.html' },
     { id: 'ai', label: 'AI Analysis', href: 'ai-analysis.html' },
     { id: 'tips', label: 'Health Tips', href: 'health-tips.html' },
+    { id: 'pharmacy', label: '⚕', href: 'Pharmacy/pharmacy.html' },
     { id: 'about', label: 'About', href: 'about.html' },
     { id: 'contact', label: 'Contact', href: 'contact.html' },
-    { id: 'pharmacy', label: '⚕', href: 'Pharmacy/pharmacy.html' },
   ];
 
   /* ---- NAVBAR ---- */
@@ -31,11 +31,6 @@ function mountChrome() {
         <ul class="nav-links">
           ${navLinks.map(l => `<li><a href="${l.href}" class="${l.id === page ? 'active' : ''}">${l.label}</a></li>`).join('')}
         </ul>
-        <div class="nav-actions">
-          <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
-          <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
-          <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
-        </div>
       </div>
     </nav>`;
   }
@@ -51,45 +46,37 @@ function mountChrome() {
             <a href="index.html" class="logo" style="color:#fff"><span class="mark">${ICONS.heart}</span> Medi<span>Care</span></a>
             <p>An AI-powered healthcare platform connecting patients, doctors and institutions for smarter, more accessible care.</p>
             <div class="socials">
-              <a href="#" aria-label="Twitter">𝕏</a>
-              <a href="#" aria-label="Facebook">f</a>
-              <a href="#" aria-label="Instagram">◎</a>
-              <a href="#" aria-label="LinkedIn">in</a>
+              <a href="https://x.com/home" aria-label="Twitter" target="_blank">𝕏</a>
             </div>
           </div>
-          <div>
-            <h5>Platform</h5>
-            <ul>
-              <li><a href="doctors.html">Find Doctors</a></li>
-              <li><a href="hospitals.html">Hospitals</a></li>
-              <li><a href="blood-banks.html">Blood Banks</a></li>
-              <li><a href="ai-analysis.html">AI Analysis</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Company</h5>
-            <ul>
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="health-tips.html">Health Tips</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="signup.html">Careers</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Account</h5>
-            <ul>
-              <li><a href="login.html">Login</a></li>
-              <li><a href="signup.html">Sign Up</a></li>
-              <li><a href="patient-dashboard.html">Patient Portal</a></li>
-              <li><a href="doctor-dashboard.html">Doctor Portal</a></li>
-            </ul>
-          </div>
+        <div>
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="doctors.html">Find Doctors</a></li>
+            <li><a href="hospitals.html">Hospitals</a></li>
+            <li><a href="blood-banks.html">Blood Banks</a></li>
+            <li><a href="ai-analysis.html">AI Analysis</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="health-tips.html">Health Tips</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Another Sections</h5>
+          <ul>
+            <li><a href="pharmacy.html">Pharmacy</a></li>
+            <li><a href="sos.html">SOS</a></li>
+            <li><a href="add.html">Track Your Health</a></li>
+            <li><a href="fbook.html">Fast Booking</a></li>
+          </ul>
+        </div>
         </div>
         <div class="footer-bottom">
           <span>© 2026 MediCare AI Platform. All rights reserved.</span>
-          <a href="Fast/fbook.html" class="btn btn-primary btn-sm">Fast Book</a>
-          <a href="additions/add.html" class="btn btn-primary btn-sm">Track your health</a>
-          <a href="Sos/sos.html" class="btn btn-primary btn-sm">SOS</a>
           <span>Built as a competition project · Frontend demo · Privacy · Terms</span>
         </div>
       </div>
