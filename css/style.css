@@ -1334,6 +1334,7 @@ textarea.field-area:focus { outline: none; border-color: var(--primary); backgro
     display: flex;
     align-items: center;
     gap: 4px;
+    
 }
 
 .badge-row {
